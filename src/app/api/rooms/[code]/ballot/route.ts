@@ -52,8 +52,17 @@ export async function POST(req: Request, ctx: { params: Promise<{ code: string }
       { room_id: room.id, player_id: a.player.id, phase: room.phase, round: room.round, type, payload },
       { onConflict: 'room_id,player_id,phase,round' },
     ));
-    const voted = [...new Set([...(room.state.voted ?? []), a.player.id])];
-    must(await d.from('rooms').update({ state: { ...room.state, voted } }).eq('id', room.id));
+    // « qui a voté » est recalculé depuis les bulletins (source de vérité) et revérifié :
+    // deux votes simultanés ne peuvent donc plus s'écraser.
+    for (let i = 0; i < 4; i++) {
+      const rows = await d.from('ballots').select('player_id').eq('room_id', room.id).eq('phase', room.phase).eq('round', room.round);
+      const voted = (rows.data ?? []).map((r) => r.player_id as string);
+      const fresh = await d.from('rooms').select('state').eq('id', room.id).single();
+      const cur = (fresh.data?.state ?? {}) as Record<string, unknown>;
+      const same = Array.isArray(cur.voted) && cur.voted.length === voted.length && voted.every((v) => (cur.voted as string[]).includes(v));
+      if (same) break;
+      must(await d.from('rooms').update({ state: { ...cur, voted } }).eq('id', room.id));
+    }
     return { ok: true };
   });
 }

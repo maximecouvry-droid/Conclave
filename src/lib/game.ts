@@ -39,7 +39,8 @@ async function ballots(roomId: string, phase: string, round: number) {
 }
 async function allVoted(room: Room) {
   const ids = await playerIds(room.id);
-  const voted = room.state.voted ?? [];
+  // vérité = table des bulletins (et non l'état affiché)
+  const voted = (await ballots(room.id, room.phase, room.round)).map((b) => b.player_id);
   ok(ids.length > 0 && ids.every((i) => voted.includes(i)), "Tout le monde n'a pas encore voté");
   return ids;
 }
