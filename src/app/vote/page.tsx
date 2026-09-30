@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { api, saveCreds } from '@/lib/client';
+import { api, currentRoom, saveCreds } from '@/lib/client';
 import ThemeToggle from '@/components/ThemeToggle';
 import MainTabs from '@/components/MainTabs';
 
@@ -12,6 +12,14 @@ export default function Home() {
   const [name, setName] = useState('');
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
+  const [checking, setChecking] = useState(true);
+
+  // déjà dans une salle : on y retourne (on ne quitte une salle qu'en la quittant/supprimant)
+  useEffect(() => {
+    const cur = currentRoom();
+    if (cur) router.replace(`/room/${cur}`);
+    else setChecking(false);
+  }, [router]);
 
   async function run(fn: () => Promise<string>) {
     setErr('');
@@ -38,6 +46,8 @@ export default function Home() {
       saveCreds(c, r);
       return c;
     });
+
+  if (checking) return null;
 
   return (
     <>

@@ -1,7 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { api, saveCreds } from '@/lib/client';
+import { useRouter } from 'next/navigation';
+import { api, forgetRoom, saveCreds } from '@/lib/client';
 import { useRoom } from '@/lib/useRoom';
 import ThemeToggle from './ThemeToggle';
 import MainTabs from './MainTabs';
@@ -14,6 +15,17 @@ export default function RoomClient({ code }: { code: string }) {
   const { room, players, marathons, me, creds, loaded, refresh, refreshMe } = useRoom(code);
   const [tab, setTab] = useState<Tab>('marathons');
   const [err, setErr] = useState('');
+  const router = useRouter();
+  const started = !!room && room.phase !== 'lobby';
+
+  // le Conclave s'ouvre : tout le monde bascule sur l'onglet de vote
+  useEffect(() => {
+    if (started) setTab('vote');
+  }, [started]);
+  // salle supprimée : on oublie la salle courante
+  useEffect(() => {
+    if (loaded && !room) forgetRoom(code);
+  }, [loaded, room, code]);
 
   if (!loaded) return <p className="hint center" style={{ paddingTop: 80 }}>Chargement…</p>;
   if (!room)
@@ -21,7 +33,7 @@ export default function RoomClient({ code }: { code: string }) {
       <div className="stage">
         <h2>Salle introuvable</h2>
         <p className="hint">Vérifie le code : {code}</p>
-        <Link className="link" href="/">Retour</Link>
+        <Link className="link" href="/vote">Créer ou rejoindre une salle</Link>
       </div>
     );
 
@@ -38,7 +50,30 @@ export default function RoomClient({ code }: { code: string }) {
     }
   };
 
-  const ctx = { room, players, marathons, me, creds, refresh, setErr };
+  const leave = () => {
+    forgetRoom(code);
+    router.push('/vote');
+  };
+  const deleteRoom = async () => {
+    if (!confirm('Supprimer la salle pour tout le monde ? Cette action est définitive.')) return;
+    try {
+      await api(`/api/rooms/${code}/action`, { type: 'delete-room' }, creds);
+      leave();
+    } catch (e) {
+      setErr((e as Error).message);
+    }
+  };
+  const restart = async () => {
+    if (!confirm('Recommencer une nouvelle partie ? Les coureurs et la liste sont conservés.')) return;
+    try {
+      await api(`/api/rooms/${code}/action`, { type: 'new-game' }, creds);
+      await refresh();
+    } catch (e) {
+      setErr((e as Error).message);
+    }
+  };
+
+  const ctx = { room, players, marathons, me, creds, refresh, refreshMe, setErr };
   return (
     <>
       <header className="top">
@@ -64,6 +99,14 @@ export default function RoomClient({ code }: { code: string }) {
 
       {err ? <div className="err">{err}</div> : null}
       {tab === 'marathons' ? <MarathonsTab {...ctx} /> : <VoteTab {...ctx} />}
+
+      <div className="sep"></div>
+      <div className="row2" style={{ marginBottom: 24 }}>
+        {me?.isHost && room.phase !== 'lobby' ? <button className="ghost" onClick={restart}>Recommencer</button> : null}
+        {me?.isHost
+          ? <button className="ghost" onClick={deleteRoom}>Supprimer la salle</button>
+          : <button className="ghost" onClick={() => confirm('Quitter la salle ?') && leave()}>Quitter la salle</button>}
+      </div>
     </>
   );
 }

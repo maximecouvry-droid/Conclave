@@ -44,16 +44,20 @@ npm run dev
 4. Deploy. Partager `https://ton-app.vercel.app`, chacun crée/rejoint avec le code à 5 caractères.
 
 ## État d'avancement
-Fait : schéma + RLS, création/jonction de salle, liste des marathons, ouverture du Conclave, Realtime,
-compteur « x/y ont voté », validation serveur des bulletins, annulation (snapshots), moteur de règles porté de la V1.
+Fait : tout le déroulé de la V1 en multi-mobile — qualifs (avec tirage au sort place par place), plaidoiries
+(chrono partagé), éliminations (égalités, carton rouge, tirage entre cartons), finale (dépouillement bulletin par bulletin,
+égalité : sprint 30 s / main levée / tirage), écran de fin, Annuler, Recommencer, thème clair/sombre.
+Vérifié par une partie simulée complète (4 joueurs) contre Supabase.
 
-À faire : écrans de vote (qualifs, élims + carton, finale), écran hôte de révélation (dépouillement pas à pas,
-tirages), plaidoiries + chrono, écran de fin.
+Le joueur revient automatiquement dans sa salle (onglet Vote) tant qu'il ne l'a pas quittée ; l'hôte peut la supprimer.
+
+À faire : écran « TV » dédié (lecture seule), onglet Accueil (liste des marathons).
 
 ## Structure
 ```
 supabase/schema.sql          tables + RLS + Realtime
 src/lib/engine.ts            règles (qualifs, élims, carton, finale), tirages serveur
+src/lib/game.ts             machine à états de la partie (actions de l'hôte)
 src/lib/history.ts           « Annuler la dernière action »
 src/lib/server.ts            auth joueur, erreurs, helpers routes
 src/app/api/rooms/**         routes API (service role)
