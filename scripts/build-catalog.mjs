@@ -36,9 +36,14 @@ async function cityImage(title) {
       headers: { 'user-agent': 'MarathonApp/1.0 (projet perso)' },
     });
     const j = await r.json();
-    const src = j.thumbnail?.source;
-    if (!src) return null;
-    return src.replace(/\/\d+px-/, '/1000px-').replace(/\?.*$/, '');
+    const orig = j.originalimage;
+    const thumb = j.thumbnail?.source;
+    if (!orig && !thumb) return null;
+    // Wikimedia n'accepte que certaines largeurs (960 ok) et jamais plus que l'original
+    if (orig && orig.width >= 960 && thumb) {
+      return thumb.replace(/\/\d+px-/, '/960px-').replace(/\?.*$/, '').replace('thumb.wikimedia.org', 'upload.wikimedia.org');
+    }
+    return (orig ?? { source: thumb }).source.replace(/\?.*$/, '');
   } catch {
     return null;
   }

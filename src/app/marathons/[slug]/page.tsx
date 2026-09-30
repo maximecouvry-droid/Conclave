@@ -67,7 +67,7 @@ export default function MarathonDetail() {
           <div className="hero">
             {m.city_image ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={m.city_image} alt={`Vue de ${m.name}`} />
+              <img src={m.city_image} alt={`Vue de ${m.name}`} referrerPolicy="no-referrer" />
             ) : null}
             <div className="shade"></div>
             {m.city_image ? <span className="credit">Photo : Wikipedia</span> : null}

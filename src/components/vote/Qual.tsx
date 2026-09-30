@@ -2,14 +2,14 @@
 import { useEffect, useState } from 'react';
 import type { VP } from '../tabctx';
 import Bib from '../Bib';
-import { Drum, HostDock, Hint, Opt, VoteStatus, Voted, Dock, place, shuffle } from './shared';
+import { Drum, HostDock, Hint, Opt, VoteStatus, Voted, Dock, place, shuffle, useDraft } from './shared';
 
 export function QualBallot({ v }: { v: VP }) {
   const need = Math.min(5, v.marathons.length);
   const saved = v.me?.myBallot?.type === 'qual' ? ((v.me.myBallot.payload.picks as string[]) ?? []) : null;
-  const [editing, setEditing] = useState(false);
-  const [sel, setSel] = useState<string[]>(saved ?? []);
-  const [ord] = useState(() => shuffle(v.marathons.map((m) => m.id)));
+  const [editing, setEditing] = useDraft(v, 'editing', () => false);
+  const [sel, setSel, clearSel] = useDraft<string[]>(v, 'sel', () => saved ?? []);
+  const [ord] = useDraft(v, 'ord', () => shuffle(v.marathons.map((m) => m.id)));
 
   if (saved && !editing)
     return <Voted v={v} label="Révéler les qualifiés" type="qual-reveal" onEdit={() => { setSel(saved); setEditing(true); }} />;
@@ -23,7 +23,7 @@ export function QualBallot({ v }: { v: VP }) {
       {ord.map((id) => <Opt key={id} m={v.M(id)} on={sel.includes(id)} onClick={() => toggle(id)} />)}
       <VoteStatus v={v} label="Révéler les qualifiés" type="qual-reveal" />
       <Dock>
-        <button className="primary" disabled={sel.length !== need || v.busy} onClick={async () => { if (await v.submit('qual', { picks: sel })) setEditing(false); }}>
+        <button className="primary" disabled={sel.length !== need || v.busy} onClick={async () => { if (await v.submit('qual', { picks: sel })) { setEditing(false); clearSel(); } }}>
           Valider mon choix
         </button>
       </Dock>

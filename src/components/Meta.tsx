@@ -1,40 +1,43 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useCatalogEntry } from '@/lib/catalog';
 import { stats } from '@/lib/format';
-import { loadNote } from '@/lib/notes';
+import { loadNote, type PersonalNote } from '@/lib/notes';
 
 /**
- * Sous le nom d'un marathon : Date / Boucles / D+ / Participants,
- * et un petit « + » qui déplie « Notes perso » (lien vers la fiche détaillée).
+ * Sous le nom d'un marathon : Date / Boucles / D+ / Participants, ta note sur 5 si elle existe,
+ * et un petit « + » qui déplie tes notes (s'il y en a) puis le lien vers la fiche détaillée.
  */
-export default function Meta({ slug, noPlus }: { slug?: string | null; noPlus?: boolean }) {
+export default function Meta({ slug }: { slug?: string | null }) {
   const m = useCatalogEntry(slug);
   const [open, setOpen] = useState(false);
-  const [preview, setPreview] = useState('');
+  const [mine, setMine] = useState<PersonalNote>({ note: '', rank: 0 });
+  useEffect(() => {
+    if (slug) setMine(loadNote(slug));
+  }, [slug]);
   if (!slug || !m) return null;
-  const stop = (e: React.SyntheticEvent) => e.stopPropagation();
+
   const toggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!open) setPreview(loadNote(slug).note.trim());
+    if (!open) setMine(loadNote(slug));
     setOpen(!open);
   };
+  const text = mine.note.trim();
   return (
     <>
       <div className="mrow">
         <span className="stats">
           {stats(m).map((s) => <span key={s.k} title={s.k}>{s.icon} {s.v}</span>)}
+          {mine.rank ? <span className="rate" title="Ta note">★ {mine.rank}/5</span> : null}
         </span>
-        {noPlus ? null : (
-          <button type="button" className="plus" onClick={toggle} aria-expanded={open} aria-label="Notes perso">{open ? '−' : '+'}</button>
-        )}
+        <button type="button" className="plus" onClick={toggle} aria-expanded={open} aria-label="Notes perso">{open ? '−' : '+'}</button>
       </div>
       {open ? (
-        <Link className="notesbtn" href={`/marathons/${slug}`} onClick={stop}>
-          <b>Notes perso</b>
-          <span>{preview ? preview.slice(0, 60) + (preview.length > 60 ? '…' : '') : 'Voir la fiche détaillée'} →</span>
-        </Link>
+        <div className="npanel" onClick={(e) => e.stopPropagation()}>
+          {text ? <div className="ntext">{text}</div> : null}
+          <Link className="notesbtn" href={`/marathons/${slug}`}>Voir la fiche détaillée →</Link>
+        </div>
       ) : null}
     </>
   );

@@ -163,3 +163,26 @@ export function Drum({ names, result, onDone }: { names: string[]; result: strin
   }, []);
   return <div className={`drum ${landed ? 'landed' : ''}`}>{txt}</div>;
 }
+
+/**
+ * État de saisie d'un bulletin, conservé dans le navigateur : si on part consulter une fiche
+ * marathon en plein vote, on retrouve ses choix (et l'ordre des options) au retour.
+ * Rattaché à (salle, phase, tour, joueur) : il ne fuit pas d'un tour à l'autre.
+ */
+export function useDraft<T>(v: VP, name: string, init: () => T) {
+  const key = `mdm-draft:${v.room.code}:${v.room.phase}:${v.room.round}:${v.creds.playerId}:${name}`;
+  const [val, setVal] = useState<T>(() => {
+    try {
+      const r = localStorage.getItem(key);
+      if (r !== null) return JSON.parse(r) as T;
+    } catch {}
+    return init();
+  });
+  useEffect(() => {
+    try { localStorage.setItem(key, JSON.stringify(val)); } catch {}
+  }, [key, val]);
+  const clear = () => {
+    try { localStorage.removeItem(key); } catch {}
+  };
+  return [val, setVal, clear] as const;
+}

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { VP } from '../tabctx';
 import Bib from '../Bib';
 import Meta from '../Meta';
-import { Dock, Drum, Hint, HostDock, OutList, Timer, VoteStatus, Voted, shuffle } from './shared';
+import { Dock, Drum, Hint, HostDock, OutList, Timer, VoteStatus, Voted, shuffle, useDraft } from './shared';
 
 export function FinalLobby({ v }: { v: VP }) {
   const alive = v.room.state.alive ?? [];
@@ -24,9 +24,9 @@ export function FinalLobby({ v }: { v: VP }) {
 export function FinalBallot({ v }: { v: VP }) {
   const alive = v.room.state.alive ?? [];
   const saved = v.me?.myBallot?.type === 'final' ? (v.me.myBallot.payload.alloc as Record<string, number>) : null;
-  const [editing, setEditing] = useState(false);
-  const [a, setA] = useState<Record<string, number>>({});
-  const [ord] = useState(() => shuffle(alive));
+  const [editing, setEditing] = useDraft(v, 'editing', () => false);
+  const [a, setA, clearA] = useDraft<Record<string, number>>(v, 'alloc', () => ({}));
+  const [ord] = useDraft(v, 'ord', () => shuffle(alive));
   const budget = v.me?.cardAvailable ? 10 : 5;
   const cap = budget === 5 ? 4 : 7;
   const used = Object.values(a).reduce((x, y) => x + y, 0);
@@ -57,7 +57,7 @@ export function FinalBallot({ v }: { v: VP }) {
         <button className="primary" disabled={rem !== 0 || v.busy} onClick={async () => {
           const alloc: Record<string, number> = {};
           alive.forEach((id) => (alloc[id] = a[id] ?? 0));
-          if (await v.submit('final', { alloc })) setEditing(false);
+          if (await v.submit('final', { alloc })) { setEditing(false); clearA(); }
         }}>Valider mes points</button>
       </Dock>
     </>

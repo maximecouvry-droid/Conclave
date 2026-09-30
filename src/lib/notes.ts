@@ -21,3 +21,10 @@ export function saveNote(slug: string, n: PersonalNote) {
     localStorage.setItem(key(slug), JSON.stringify(n));
   } catch {}
 }
+
+/** Notes de plusieurs marathons d'un coup (pour trier la liste). */
+export function loadRanks(slugs: string[]): Record<string, number> {
+  const out: Record<string, number> = {};
+  slugs.forEach((s) => (out[s] = loadNote(s).rank));
+  return out;
+}

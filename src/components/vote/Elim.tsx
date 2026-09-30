@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { VP } from '../tabctx';
 import Bib from '../Bib';
-import { Dock, Drum, Hint, HostDock, Opt, OutList, VoteStatus, Voted, shuffle } from './shared';
+import { Dock, Drum, Hint, HostDock, Opt, OutList, VoteStatus, Voted, shuffle, useDraft } from './shared';
 
 export function ElimLobby({ v }: { v: VP }) {
   const alive = v.room.state.alive ?? [];
@@ -22,10 +22,10 @@ export function ElimLobby({ v }: { v: VP }) {
 export function ElimBallot({ v }: { v: VP }) {
   const alive = v.room.state.alive ?? [];
   const saved = v.me?.myBallot && (v.me.myBallot.type === 'vote' || v.me.myBallot.type === 'card') ? v.me.myBallot : null;
-  const [editing, setEditing] = useState(false);
-  const [t, setT] = useState<string | null>(null);
-  const [card, setCard] = useState(false);
-  const [ord] = useState(() => shuffle(alive));
+  const [editing, setEditing] = useDraft(v, 'editing', () => false);
+  const [t, setT, clearT] = useDraft<string | null>(v, 'target', () => null);
+  const [card, setCard, clearCard] = useDraft(v, 'card', () => false);
+  const [ord] = useDraft(v, 'ord', () => shuffle(alive));
   const hasCard = !!v.me?.cardAvailable;
 
   if (saved && !editing)
@@ -47,7 +47,7 @@ export function ElimBallot({ v }: { v: VP }) {
       ) : <p className="hint center">Ton carton rouge a déjà été joué.</p>}
       <VoteStatus v={v} label="Dépouiller" type="resolve" />
       <Dock>
-        <button className={`primary ${card ? 'red' : ''}`} disabled={!t || v.busy} onClick={async () => { if (await v.submit(card ? 'card' : 'vote', { target: t })) setEditing(false); }}>
+        <button className={`primary ${card ? 'red' : ''}`} disabled={!t || v.busy} onClick={async () => { if (await v.submit(card ? 'card' : 'vote', { target: t })) { setEditing(false); clearT(); clearCard(); } }}>
           {card ? 'Valider mon carton rouge' : 'Valider mon vote'}
         </button>
       </Dock>
