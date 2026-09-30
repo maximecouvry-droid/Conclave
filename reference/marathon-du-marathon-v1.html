@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le Marathon du Marathon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9EAE6; --surface:#FFFFFF; --ink:#1E2126; --muted:#656A72; --line:#D3D5D0;
+  --blue:#1667D9; --blue-soft:#DCE8FA; --yellow:#FFCF33; --red:#D8212F; --red-soft:#FADDE0; --ok:#1C8A57;
+  --disp:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:Barlow,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1E23; --surface:#262A31; --ink:#EEF0F2; --muted:#9CA2AA; --line:#363B43;
+    --blue:#4C8DF0; --blue-soft:#1F2F48; --red:#F0424F; --red-soft:#3E1D22; --ok:#3DBB7E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1E23; --surface:#262A31; --ink:#EEF0F2; --muted:#9CA2AA; --line:#363B43;
+  --blue:#4C8DF0; --blue-soft:#1F2F48; --red:#F0424F; --red-soft:#3E1D22; --ok:#3DBB7E;
+  color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+#app{max-width:560px;margin:0 auto;padding:0 16px 120px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;background:var(--bg)}
+.brand{font-family:var(--disp);font-weight:800;font-size:20px;letter-spacing:.01em;display:flex;align-items:center;gap:8px}
+.brand i{display:inline-block;width:22px;height:6px;border-radius:3px;background:var(--blue)}
+.tools{display:flex;gap:6px}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:10px;padding:6px 12px;font-weight:600;font-size:15px}
+.ghost:disabled{opacity:.35;cursor:default}
+
+/* the blue line progress */
+.route{display:flex;align-items:center;margin:4px 0 20px;font-family:var(--disp);font-weight:700;font-size:15px}
+.route span{flex:1;text-align:center;color:var(--muted);padding-top:10px;position:relative}
+.route span::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--line)}
+.route span.done::before,.route span.now::before{background:var(--blue)}
+.route span.now{color:var(--ink)}
+.route span.now::after{content:"";position:absolute;right:-4px;top:-4px;width:12px;height:12px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 3px var(--bg)}
+
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(44px,13vw,64px);line-height:.92;margin:8px 0 12px;letter-spacing:-.01em}
+h2{font-family:var(--disp);font-weight:700;font-size:28px;line-height:1.05;margin:0 0 8px}
+.kicker{font-weight:600;color:var(--blue);font-size:15px;margin-bottom:4px}
+.hint{color:var(--muted);font-size:15px;margin:4px 0 12px}
+.center{text-align:center}
+.lede{font-size:18px;color:var(--muted);margin:0 0 24px;max-width:30em}
+
+.panel{background:var(--surface);border-radius:18px;padding:18px;margin:0 0 14px}
+.panel.flat{background:transparent;padding:0}
+
+/* inputs */
+.prow{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.prow input{flex:1;min-width:0;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;font-size:17px}
+.prow .x{border:0;background:transparent;font-size:24px;color:var(--muted);width:36px;height:36px}
+.num{font-family:var(--disp);font-weight:800;font-size:22px;width:26px;text-align:center;color:var(--blue)}
+textarea{width:100%;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;font-size:16px;resize:vertical;line-height:1.5}
+code{font-size:14px;background:var(--bg);padding:1px 6px;border-radius:6px}
+.link{background:none;border:0;color:var(--blue);font-weight:600;padding:8px 0}
+.count{font-family:var(--disp);font-weight:700;color:var(--blue)}
+.rules{margin:0;padding-left:20px}
+.rules li{margin-bottom:8px}
+.rules b{font-weight:700}
+.err{background:var(--red-soft);color:var(--red);border-radius:12px;padding:12px 14px;font-weight:600;margin-bottom:14px}
+
+/* buttons */
+.primary{display:block;width:100%;border:0;border-radius:14px;background:var(--blue);color:#fff;font-weight:700;font-size:18px;padding:16px 18px;text-align:center}
+.primary:disabled{opacity:.4;cursor:default}
+.primary.red{background:var(--red)}
+.primary.dark{background:var(--ink);color:var(--bg)}
+.dock{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 70%,transparent);z-index:4}
+.dock .primary{max-width:528px;margin:0 auto}
+.row2{display:flex;gap:10px}
+.row2>*{flex:1}
+
+/* bibs: the memorable element */
+.bib{position:relative;background:var(--surface);border-radius:14px;padding:14px 16px 14px 64px;margin-bottom:10px;min-height:64px;display:flex;flex-direction:column;justify-content:center;border:2px solid transparent}
+.bib::before,.bib::after{content:"";position:absolute;top:8px;width:7px;height:7px;border-radius:50%;background:var(--bg);box-shadow:inset 0 1px 1px rgba(0,0,0,.18)}
+.bib::before{left:8px}.bib::after{right:8px}
+.bib .no{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:var(--disp);font-weight:800;font-size:30px;color:var(--blue);width:40px;text-align:center}
+.bib .nm{font-family:var(--disp);font-weight:700;font-size:24px;line-height:1.05}
+.bib .inf{color:var(--muted);font-size:14px;margin-top:2px}
+.bib .tag{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-weight:700;font-size:14px;color:var(--muted)}
+.bib.new{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+.bib.out{opacity:.55}
+.bib.out .nm{text-decoration:line-through;text-decoration-thickness:2px}
+.bib.gold{border-color:var(--yellow)}
+@keyframes pop{from{transform:scale(.85);opacity:0}to{transform:none;opacity:1}}
+
+/* ballot options */
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border:2px solid transparent;border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.opt .ck{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--line);display:grid;place-items:center;font-size:15px;font-weight:800;color:#fff}
+.opt.radio .ck{border-radius:50%}
+.opt.on{border-color:var(--blue)}
+.opt.on .ck{background:var(--blue);border-color:var(--blue)}
+.opt.on .ck::after{content:"✓"}
+.opt .tx{display:flex;flex-direction:column;min-width:0}
+.opt .nm{font-weight:700;font-size:18px}
+.opt .inf{color:var(--muted);font-size:14px}
+.redmode .opt.on{border-color:var(--red)}
+.redmode .opt.on .ck{background:var(--red);border-color:var(--red)}
+
+.cardbtn{width:100%;border:2px dashed var(--red);background:transparent;color:var(--red);border-radius:14px;padding:14px;font-weight:700;font-size:17px;margin-top:10px}
+.cardbtn.on{background:var(--red);color:#fff;border-style:solid}
+.redbanner{background:var(--red-soft);color:var(--red);border-radius:14px;padding:12px 14px;font-weight:600;margin-bottom:12px}
+
+/* handoff */
+.handoff{text-align:center;padding:40px 0 20px}
+.handoff .who{font-family:var(--disp);font-weight:800;font-size:clamp(52px,16vw,80px);line-height:1;margin:6px 0 28px;overflow-wrap:anywhere}
+.handoff .big{font-size:56px;margin-bottom:8px}
+.ack{display:inline-block;background:var(--surface);border-radius:999px;padding:6px 14px;font-weight:600;font-size:15px;color:var(--ok);margin-bottom:10px}
+
+/* reveals */
+.stage{text-align:center;padding:24px 0}
+.stage .huge{font-family:var(--disp);font-weight:800;font-size:clamp(48px,15vw,76px);line-height:.95;margin:8px 0 12px;overflow-wrap:anywhere}
+.redcard{display:inline-block;background:var(--red);color:#fff;font-family:var(--disp);font-weight:800;font-size:40px;padding:26px 22px;border-radius:12px;transform:rotate(-6deg);animation:slam .45s cubic-bezier(.2,1.6,.4,1);box-shadow:0 12px 30px rgba(216,33,47,.35);margin:10px 0 18px}
+@keyframes slam{from{transform:rotate(-30deg) scale(2);opacity:0}to{transform:rotate(-6deg) scale(1);opacity:1}}
+.calm{font-family:var(--disp);font-weight:700;font-size:34px;margin:18px 0}
+.drum{font-family:var(--disp);font-weight:800;font-size:clamp(36px,11vw,56px);min-height:1.2em;margin:18px 0;overflow-wrap:anywhere}
+.drum.landed{color:var(--blue);animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+.eliminated{font-family:var(--disp);font-weight:800;font-size:clamp(40px,12vw,60px);line-height:1;margin:6px 0 4px;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:5px}
+
+/* tally bars */
+.bars{margin:10px 0 18px;text-align:left}
+.bar{margin-bottom:10px}
+.bar .lb{display:flex;justify-content:space-between;font-weight:700;font-size:17px;margin-bottom:4px}
+.bar .tr{height:14px;background:var(--surface);border-radius:7px;overflow:hidden}
+.bar .fl{height:100%;background:var(--blue);border-radius:7px;transition:width .5s ease}
+.bar.hot .fl{background:var(--red)}
+.bar.lead .fl{background:var(--yellow)}
+.lastvote{font-weight:600;color:var(--muted);margin-bottom:6px}
+
+/* final ballot */
+.alloc{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:14px;padding:12px 14px;margin-bottom:8px}
+.alloc .nm{flex:1;font-weight:700;font-size:18px;min-width:0;overflow-wrap:anywhere}
+.step{width:44px;height:44px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);font-size:24px;font-weight:700;line-height:1}
+.step:disabled{opacity:.3}
+.alloc .v{font-family:var(--disp);font-weight:800;font-size:30px;width:34px;text-align:center}
+.budget{font-weight:600;margin:0 0 14px}
+.budget b{font-family:var(--disp);font-size:26px}
+.budget.red{color:var(--red)}
+.slip{background:var(--surface);border-radius:14px;padding:12px 14px;margin-bottom:8px;text-align:left}
+.slip.pop{animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+.slip .hd{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:4px}
+.slip .pts{color:var(--muted);font-size:15px}
+.badge{font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--blue-soft);color:var(--blue)}
+.badge.red{background:var(--red-soft);color:var(--red)}
+
+/* timer */
+.timer{background:var(--surface);border-radius:18px;padding:16px;margin-bottom:14px;text-align:center}
+.tval{font-family:var(--disp);font-weight:800;font-size:64px;line-height:1;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.tval.ding{color:var(--red);animation:pop .4s}
+
+.winner{text-align:center;padding:30px 0 10px}
+.winner .huge{font-family:var(--disp);font-weight:800;font-size:clamp(58px,19vw,96px);line-height:.9;margin:10px 0}
+.finish{height:18px;margin:20px auto;max-width:320px;background:repeating-conic-gradient(var(--ink) 0 25%,var(--surface) 0 50%) 0 0/18px 18px;border-radius:3px}
+.recap{text-align:left}
+.recap li{margin-bottom:6px}
+.sep{height:1px;background:var(--line);margin:18px 0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const KEY='mdm-v1', NQ=7;
+let S=null, H=[], D={}, tmr=null, tRem=0, tSec=0, drumT=null, lastKey='';
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const M=id=>(S.marathons.find(m=>m.id===id)||{name:'?',info:''});
+const P=i=>S.players[i];
+const ord=ids=>{if(!D.ord||D.ord.length!==ids.length||!ids.every(i=>D.ord.includes(i)))D.ord=shuffle(ids);return D.ord};
+const plural=(n,w)=>n+' '+w+(n>1?'s':'');
+
+const EXAMPLE=`Lisbonne ; octobre
+Porto ; novembre
+Séville ; février
+Valence ; décembre
+Barcelone ; mars
+Malaga ; décembre
+Rome ; mars
+Florence ; novembre
+Berlin ; septembre
+Amsterdam ; octobre
+Prague ; mai
+Budapest ; automne
+Vienne ; avril
+Copenhague ; mai
+Dublin ; octobre
+Madère ; janvier
+Malte ; février
+Nice-Cannes ; novembre
+Ljubljana ; octobre`;
+
+function fresh(keep){return{phase:'setup',players:keep?keep.players:['','','',''],text:keep?keep.text:'',marathons:[],stage:'handoff',voter:0,qual:{},qr:null,alive:[],out:[],round:1,total:4,ballots:[],revote:null,cards:{},rv:null,final:{alloc:{},order:null,step:0,tie:null},winner:null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({S,H}))}catch(e){}}
+function load(){try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r&&r.S){S=r.S;H=Array.isArray(r.H)?r.H:[]}}catch(e){}if(!S)S=fresh()}
+function commit(fn){H.push(JSON.stringify(S));if(H.length>80)H.shift();fn(S);D={};save();render()}
+function soft(fn){fn(S);save();render()}
+
+function parseList(t){
+  return String(t||'').split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{
+    const parts=l.split(';').map(s=>s.trim()).filter(Boolean);
+    return{name:parts[0]||'',info:parts.slice(1).join(', ')};
+  }).filter(m=>m.name).map((m,i)=>({id:'m'+i,name:m.name,info:m.info}));
+}
+
+/* ---------- timer & drum ---------- */
+function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+function timerHTML(sec,label){return `<div class="timer"><div class="hint" style="margin-top:0">${esc(label)}</div><div class="tval" id="tval">${fmt(sec)}</div><div class="row2"><button class="primary" data-a="tstart">Lancer le chrono</button><button class="ghost" data-a="treset">Remettre à ${fmt(sec)}</button></div></div>`}
+function stopTimer(){if(tmr){clearInterval(tmr);tmr=null}}
+function stopDrum(){if(drumT){clearTimeout(drumT);drumT=null}}
+function runDrum(names,result,done){
+  const el=document.getElementById('drum');
+  document.querySelectorAll('[data-drumbtn]').forEach(b=>b.disabled=true);
+  if(!el){done();return}
+  const pool=shuffle(names);let i=0,delay=55;
+  const tick=()=>{el.textContent=pool[i++%pool.length];delay*=1.1;
+    if(delay<430){drumT=setTimeout(tick,delay)}
+    else{el.textContent=result;el.classList.add('landed');drumT=setTimeout(done,1100)}};
+  tick();
+}
+
+/* ---------- chrome ---------- */
+function header(){
+  return `<header class="top"><div class="brand"><i></i>Marathon du Marathon</div>${S.phase!=='setup'?`<div class="tools"><button class="ghost" data-a="undo" ${H.length?'':'disabled'}>Annuler</button><button class="ghost" data-a="reset" aria-label="Nouvelle partie">Recommencer</button></div>`:''}</header>`;
+}
+function route(){
+  if(S.phase==='setup')return'';
+  const idx={qual:0,qr:0,plead:1,elim:2,final:3,end:4}[S.phase];
+  const names=['Qualifs','Plaidoiries','Éliminations','Finale'];
+  return `<nav class="route">${names.map((n,i)=>`<span class="${i<idx?'done':i===idx?'now':''}">${n}</span>`).join('')}</nav>`;
+}
+function bib(id,no,extra,cls){const m=M(id);return `<div class="bib ${cls||''}"><span class="no">${no}</span><span class="nm">${esc(m.name)}</span>${m.info?`<span class="inf">${esc(m.info)}</span>`:''}${extra?`<span class="tag">${extra}</span>`:''}</div>`}
+function dock(inner){return `<div class="dock">${inner}</div>`}
+
+function handoff(label){
+  const prev=S.voter>0?`<div class="ack">✓ Vote de ${esc(P(S.voter-1))} enregistré</div>`:'';
+  return `<div class="handoff">${prev}<div class="kicker">${esc(label)}</div><div class="big">📱</div><div class="hint">Passe le téléphone à</div><div class="who">${esc(P(S.voter))}</div><p class="hint">Les autres regardent ailleurs.</p></div>${dock(`<button class="primary" data-a="iam">Je suis ${esc(P(S.voter))}</button>`)}`;
+}
+function ready(label,btn,action){
+  return `<div class="stage"><div class="ack">✓ Tous les bulletins sont dans l'urne</div><div class="huge">🗳️</div><p class="lede" style="margin:0 auto 20px">${esc(label)}</p></div>${dock(`<button class="primary dark" data-a="${action}">${esc(btn)}</button>`)}`;
+}
+
+/* ---------- SETUP ---------- */
+const RULES=`<ol class="rules">
+<li><b>Qualifs.</b> Chacun choisit 3 marathons en secret. Les 7 plus cités passent.</li>
+<li><b>Plaidoiries.</b> Une minute chacun pour défendre son favori.</li>
+<li><b>Éliminations.</b> Vote secret, le plus désigné sort, jusqu'à 3 finalistes. Égalité : tous les ex-aequo sortent si c'est possible, sinon personne.</li>
+<li><b>Carton rouge.</b> Une fois dans la partie, dans ton bulletin, tu peux dégainer ton carton : le marathon visé sort d'office. Prix : 5 points au lieu de 10 en finale.</li>
+<li><b>Finale.</b> Chacun répartit ses points, 6 maximum sur un même marathon.</li></ol>`;
+function vSetup(){
+  const ps=S.players.map((p,i)=>`<div class="prow"><span class="num">${i+1}</span><input data-in="player" data-i="${i}" value="${esc(p)}" placeholder="Prénom" maxlength="20" autocomplete="off">${S.players.length>3?`<button class="x" data-a="delPlayer" data-v="${i}" aria-label="Retirer">×</button>`:''}</div>`).join('');
+  return `<h1>Le Marathon<br>du Marathon</h1><p class="lede">Choisissez la course de l'an prochain en un seul téléphone qu'on se passe autour de la table.</p>
+  ${D.err?`<div class="err">${esc(D.err)}</div>`:''}
+  <div class="panel"><h2>Coureurs</h2>${ps}${S.players.length<8?`<button class="link" data-a="addPlayer">Ajouter un coureur</button>`:''}</div>
+  <div class="panel"><h2>Marathons <span class="count" id="cnt">${parseList(S.text).length}</span></h2><p class="hint">Une ligne par marathon : <code>Ville ; critère ; critère</code></p><textarea data-in="text" rows="10" placeholder="Lisbonne ; octobre ; une boucle ; semi le même jour">${esc(S.text)}</textarea><button class="link" data-a="example">Charger une liste d'exemple</button></div>
+  <div class="panel"><h2>Règles</h2>${RULES}</div>
+  ${dock(`<button class="primary" data-a="start">Prendre le départ</button>`)}`;
+}
+
+/* ---------- QUALIFS ---------- */
+function vQual(){
+  if(S.stage==='handoff')return handoff('Qualifs, vote secret');
+  if(S.stage==='ready')return ready('Posez le téléphone au milieu de la table.','Révéler les qualifiés','qreveal');
+  const need=Math.min(3,S.marathons.length), sel=D.sel||[];
+  const list=ord(S.marathons.map(x=>x.id)).map(M).map(m=>`<button class="opt ${sel.includes(m.id)?'on':''}" data-a="qsel" data-v="${m.id}"><span class="ck"></span><span class="tx"><span class="nm">${esc(m.name)}</span>${m.info?`<span class="inf">${esc(m.info)}</span>`:''}</span></button>`).join('');
+  return `<div class="kicker">Qualifs</div><h2>${esc(P(S.voter))}, choisis tes ${need} marathons</h2><p class="hint">${sel.length} sur ${need} sélectionnés</p>${list}${dock(`<button class="primary" data-a="qvalid" ${sel.length===need?'':'disabled'}>Valider mon choix</button>`)}`;
+}
+function computeQual(s){
+  const cnt={};s.marathons.forEach(m=>cnt[m.id]=0);
+  Object.values(s.qual).forEach(b=>b.forEach(id=>cnt[id]++));
+  const n=Math.min(NQ,s.marathons.length);
+  const sorted=shuffle(s.marathons.map(m=>m.id)).sort((a,b)=>cnt[b]-cnt[a]);
+  const cut=cnt[sorted[n-1]];
+  const above=sorted.filter(id=>cnt[id]>cut), tied=sorted.filter(id=>cnt[id]===cut);
+  const spots=n-above.length, chosen=tied.slice(0,spots);
+  const ranked=above.concat(chosen);
+  s.qr={ranked,cnt,step:0,coin:tied.length>spots?{cands:tied,wins:chosen,spots,cut}:null,coinDone:false,
+        dropped:sorted.filter(id=>!ranked.includes(id)&&cnt[id]>0)};
+  s.alive=ranked.slice();
+}
+function vQualReveal(){
+  const q=S.qr,n=q.ranked.length,c=q.coin,aboveN=n-(c?c.spots:0);
+  let h=`<div class="kicker">Qualifs</div><h2>Les ${n} qualifiés</h2>`;
+  const shown=[];
+  for(let k=0;k<q.step;k++){const pos=n-k,id=q.ranked[pos-1];shown.unshift({id,pos,isNew:k===q.step-1,drawn:pos>aboveN})}
+  const nextPos=n-q.step, isDraw=c&&q.step<n&&nextPos>aboveN;
+  if(isDraw){
+    h+=`<div class="stage" style="padding:8px 0 0"><p class="hint">${c.cands.length} marathons à égalité (${c.cut} voix) pour ${plural(c.spots,'place')}. Tirage au sort place par place.</p><div class="drum" id="drum">🎲</div></div>`;
+  }
+  h+=shown.map(x=>bib(x.id,x.pos,q.cnt[x.id]+' voix'+(x.drawn?', au sort':''),x.isNew?'new':'')).join('');
+  if(q.step<n){
+    const lbl=nextPos===1?'1re':nextPos+'e';
+    h+=dock(isDraw?`<button class="primary dark" data-a="qdraw" data-drumbtn>Tirage au sort pour la ${lbl} place</button>`:`<button class="primary dark" data-a="qnext">Révéler la ${lbl} place</button>`);
+  }else{
+    if(q.dropped.length)h+=`<p class="hint">Cités mais non qualifiés : ${q.dropped.map(id=>esc(M(id).name)).join(', ')}.</p>`;
+    h+=dock(`<button class="primary" data-a="toPlead">Passer aux plaidoiries</button>`);
+  }
+  return h;
+}
+
+/* ---------- PLAIDOIRIES ---------- */
+function vPlead(){
+  return `<div class="kicker">Plaidoiries</div><h2>Une minute chacun</h2><p class="hint">Défends ton favori, ou descends celui qu'il faut sortir absolument.</p>${timerHTML(60,'Chrono de plaidoirie')}${S.alive.map((id,i)=>bib(id,i+1)).join('')}${dock(`<button class="primary" data-a="toElim">Lancer les éliminations</button>`)}`;
+}
+
+/* ---------- ÉLIMINATIONS ---------- */
+function outList(){
+  if(!S.out.length)return'';
+  return `<div class="sep"></div><div class="hint">Déjà éliminés</div>`+S.out.map(o=>bib(o.id,'T'+o.round,o.how==='card'?'🟥':'🗳️','out')).join('');
+}
+function vElim(){
+  if(S.stage==='lobby'){
+    return `<div class="kicker">Tour ${S.round}</div><h2>Il reste ${S.alive.length} marathons</h2><p class="hint">Discutez, négociez, bluffez. En cas d'égalité, tous les ex-aequo sortent si c'est possible.</p>${S.alive.map((id,i)=>bib(id,i+1)).join('')}${outList()}${dock(`<button class="primary" data-a="startVote">Lancer le vote du tour</button>`)}`;
+  }
+  if(S.stage==='handoff')return handoff(`Tour ${S.round}, vote secret`);
+  if(S.stage==='ready')return ready('Posez le téléphone au milieu de la table.','Dépouiller','resolve');
+  if(S.stage==='ballot')return vElimBallot();
+  if(S.stage==='reveal')return vElimReveal();
+  return '';
+}
+function vElimBallot(){
+  const hasCard=!S.cards[S.voter], card=!!D.card, t=D.t;
+  const list=ord(S.alive).map(id=>{const m=M(id);return `<button class="opt radio ${t===id?'on':''}" data-a="esel" data-v="${id}"><span class="ck"></span><span class="tx"><span class="nm">${esc(m.name)}</span>${m.info?`<span class="inf">${esc(m.info)}</span>`:''}</span></button>`}).join('');
+  const cardZone=hasCard?`<button class="cardbtn ${card?'on':''}" data-a="toggleCard">${card?'Ranger mon carton rouge':'🟥 Dégainer mon carton rouge'}</button><p class="hint">${card?"Ton choix sortira d'office, quels que soient les votes. Prix : 5 points au lieu de 10 en finale.":"Une seule fois dans la partie. Le marathon visé sort d'office, mais tu n'auras que 5 points en finale."}</p>`:`<p class="hint center">Ton carton rouge a déjà été joué.</p>`;
+  return `<div class="${card?'redmode':''}"><div class="kicker">Tour ${S.round}</div><h2>${esc(P(S.voter))}, ${card?'qui prend ton carton rouge ?':'qui doit sortir ?'}</h2>${card?`<div class="redbanner">🟥 Carton rouge dégainé</div>`:''}${list}${cardZone}</div>${dock(`<button class="primary ${card?'red':''}" data-a="evalid" ${t?'':'disabled'}>${card?'Valider mon carton rouge':'Valider mon vote'}</button>`)}`;
+}
+function resolveRound(s){
+  const bs=s.ballots, cards=bs.filter(b=>b.type==='card');
+  if(cards.length){
+    const targets=[...new Set(cards.map(c=>c.target))];
+    const target=targets.length>1?pick(targets):targets[0];
+    cards.filter(c=>c.target===target).forEach(c=>s.cards[c.p]=true);
+    s.rv={kind:'card',targets:[target],coin:targets.length>1?targets:null,coinDone:false,returned:cards.filter(c=>c.target!==target).length,step:0};
+    return;
+  }
+  const tally={};s.alive.forEach(id=>tally[id]=0);bs.forEach(b=>tally[b.target]++);
+  const max=Math.max(...Object.values(tally)), tied=s.alive.filter(id=>tally[id]===max);
+  const order=shuffle(bs.map(b=>b.target));
+  if(tied.length===1)s.rv={kind:'vote',targets:tied,order,step:0};
+  else if(s.alive.length-tied.length>=3)s.rv={kind:'multi',targets:tied,order,step:0};
+  else s.rv={kind:'stay',targets:[],tied,order,step:0,toFinal:s.alive.length<=4};
+}
+function tallyBars(cands,votes,lastId){
+  const t={};cands.forEach(id=>t[id]=0);votes.forEach(id=>t[id]++);
+  const max=Math.max(1,...Object.values(t));
+  return `<div class="bars">${cands.slice().sort((a,b)=>t[b]-t[a]).map(id=>`<div class="bar ${t[id]===max&&t[id]>0?'hot':''}"><div class="lb"><span>${esc(M(id).name)}${id===lastId?' ◂':''}</span><span>${t[id]}</span></div><div class="tr"><div class="fl" style="width:${Math.round(t[id]/S.players.length*100)}%"></div></div></div>`).join('')}</div>`;
+}
+function vElimReveal(){
+  const r=S.rv, title=`<div class="kicker">Tour ${S.round}, dépouillement</div>`;
+  if(r.step===0){
+    return title+`<div class="stage"><div class="huge">🟥 ?</div><p class="lede" style="margin:0 auto">Quelqu'un a-t-il dégainé son carton rouge ce tour-ci ?</p></div>${dock(`<button class="primary dark" data-a="rvnext">Réponse</button>`)}`;
+  }
+  if(r.kind==='card'){
+    let h=title+`<div class="stage"><div class="redcard">CARTON ROUGE</div>`;
+    if(r.coin&&!r.coinDone){
+      return h+`<p class="lede" style="margin:0 auto">Plusieurs cartons sur des marathons différents. Un seul sort : tirage au sort.</p><div class="drum" id="drum">🎲</div></div>${dock(`<button class="primary dark" data-a="rvcoin" data-drumbtn>Tirage au sort</button>`)}`;
+    }
+    h+=`<div class="eliminated">${esc(M(r.targets[0]).name)}</div><p class="hint">sort d'office.</p>`;
+    if(r.returned)h+=`<p class="hint">${r.returned>1?r.returned+' cartons non appliqués sont rendus à leurs propriétaires':'Un carton non appliqué est rendu à son propriétaire'}, sans pénalité.</p>`;
+    return h+`</div>${dock(`<button class="primary" data-a="applyElim">Continuer</button>`)}`;
+  }
+  const n=r.order.length;
+  if(r.step===1){
+    return title+`<div class="stage"><div class="calm">Aucun carton rouge ce tour.</div><p class="lede" style="margin:0 auto">On ouvre les ${n} bulletins un par un.</p></div>${dock(`<button class="primary dark" data-a="rvnext">Ouvrir le premier bulletin</button>`)}`;
+  }
+  const shown=Math.min(r.step-1,n), votes=r.order.slice(0,shown), last=votes[votes.length-1];
+  let h=title+`<div class="lastvote">Bulletin ${shown} sur ${n} : ${esc(M(last).name)}</div>`+tallyBars(S.alive,votes,last);
+  if(shown<n)return h+dock(`<button class="primary dark" data-a="rvnext">Bulletin suivant</button>`);
+  const names=ids=>ids.map(id=>esc(M(id).name)).join(' et ');
+  if(r.kind==='vote'){
+    return h+`<div class="stage"><div class="eliminated">${names(r.targets)}</div><p class="hint">est éliminé.</p></div>${dock(`<button class="primary" data-a="applyElim">Continuer</button>`)}`;
+  }
+  if(r.kind==='multi'){
+    return h+`<div class="stage"><div class="calm">Égalité</div><div class="eliminated">${r.targets.map(id=>esc(M(id).name)).join('<br>')}</div><p class="hint">sortent tous ensemble.${S.alive.length-r.targets.length===3?' Direction la finale.':''}</p></div>${dock(`<button class="primary" data-a="applyElim">Continuer</button>`)}`;
+  }
+  return h+`<div class="stage"><div class="calm">Égalité : personne ne sort</div><p class="lede" style="margin:0 auto">${r.toFinal?`Impossible de sortir ${names(r.tied)} tous ensemble. La finale se joue à ${S.alive.length}.`:"Trop d'ex-aequo pour tous les sortir. On rediscute et on revote."}</p></div>${dock(`<button class="primary" data-a="applyElim">${r.toFinal?'Aller en finale':'Tour suivant'}</button>`)}`;
+}
+
+/* ---------- FINALE ---------- */
+function totals(){const t={};S.alive.forEach(id=>t[id]=0);Object.values(S.final.alloc).forEach(a=>Object.entries(a).forEach(([id,v])=>{if(id in t)t[id]+=v}));return t}
+function vFinal(){
+  const f=S.final;
+  if(S.stage==='lobby'){
+    return `<div class="kicker">Finale</div><h2>Les ${S.alive.length} finalistes</h2><p class="hint">Chacun répartit en secret ses points, 6 maximum sur un même marathon. Qui a joué son carton rouge n'en a que 5.</p>${S.alive.map((id,i)=>bib(id,i+1,'','gold')).join('')}${timerHTML(60,'Derniers discours')}${outList()}${dock(`<button class="primary" data-a="startVote">Lancer le vote final</button>`)}`;
+  }
+  if(S.stage==='handoff')return handoff('Finale, vote secret');
+  if(S.stage==='ready')return ready("Posez le téléphone au milieu. Les bulletins seront ouverts dans un ordre tiré au sort.",'Dépouiller la finale','fstart');
+  if(S.stage==='ballot'){
+    const budget=S.cards[S.voter]?5:10, cap=Math.min(6,budget), a=D.a||{}, used=Object.values(a).reduce((x,y)=>x+y,0), rem=budget-used;
+    const rows=ord(S.alive).map(id=>{const v=a[id]||0;return `<div class="alloc"><span class="nm">${esc(M(id).name)}</span><button class="step" data-a="fminus" data-v="${id}" ${v<=0?'disabled':''} aria-label="Retirer un point">−</button><span class="v">${v}</span><button class="step" data-a="fplus" data-v="${id}" ${(v>=cap||rem<=0)?'disabled':''} aria-label="Ajouter un point">+</button></div>`}).join('');
+    return `<div class="kicker">Finale</div><h2>${esc(P(S.voter))}, répartis tes points</h2><p class="budget ${budget===5?'red':''}">${budget===5?'🟥 Carton rouge joué. ':''}<b>${rem}</b> sur ${budget} points restants, ${cap} maximum par marathon.</p>${rows}${dock(`<button class="primary" data-a="fvalid" ${rem===0?'':'disabled'}>Valider mes points</button>`)}`;
+  }
+  if(S.stage==='reveal')return vFinalReveal();
+  return '';
+}
+function vFinalReveal(){
+  const f=S.final, n=f.order.length, shownN=f.step;
+  const part={};S.alive.forEach(id=>part[id]=0);
+  const slips=[];
+  for(let k=0;k<shownN;k++){const p=f.order[k],a=f.alloc[p];Object.entries(a).forEach(([id,v])=>part[id]+=v);slips.unshift({p,a,isNew:k===shownN-1})}
+  const maxPossible=Object.keys(f.alloc).reduce((s,p)=>s+(S.cards[p]?5:10),0);
+  const lead=Math.max(...Object.values(part));
+  const bars=`<div class="bars">${S.alive.slice().sort((x,y)=>part[y]-part[x]).map(id=>`<div class="bar ${part[id]===lead&&lead>0?'lead':''}"><div class="lb"><span>${esc(M(id).name)}</span><span>${part[id]}</span></div><div class="tr"><div class="fl" style="width:${Math.min(100,Math.round(part[id]/Math.max(1,maxPossible)*100*1.6))}%"></div></div></div>`).join('')}</div>`;
+  const sl=slips.map(x=>{const b=S.cards[x.p]?5:10;return `<div class="slip ${x.isNew?'pop':''}"><div class="hd"><span>${esc(P(x.p))}</span><span class="badge ${b===5?'red':''}">${b===5?'🟥 5 points':'10 points'}</span></div><div class="pts">${S.alive.map(id=>esc(M(id).name)+' '+(x.a[id]||0)).join(', ')}</div></div>`}).join('');
+  let h=`<div class="kicker">Finale, dépouillement</div><h2>${shownN===0?'Premier bulletin ?':`Bulletin ${shownN} sur ${n}`}</h2>${bars}${sl}`;
+  if(shownN<n)return h+dock(`<button class="primary dark" data-a="fnext">${shownN===0?'Ouvrir le premier bulletin':'Bulletin suivant'}</button>`);
+  const t=totals(), max=Math.max(...Object.values(t)), top=S.alive.filter(id=>t[id]===max);
+  if(top.length===1)return h+dock(`<button class="primary" data-a="setWinner" data-v="${top[0]}">Voir le vainqueur</button>`);
+  const btns=top.map(id=>`<button class="primary" data-a="setWinner" data-v="${id}" style="margin-bottom:8px">${esc(M(id).name)} l'emporte à main levée</button>`).join('');
+  return h+`<div class="sep"></div><div class="stage" style="padding-top:0"><div class="calm">Égalité à ${max} points</div><p class="lede" style="margin:0 auto 14px">30 secondes de discours pour chaque défenseur, puis vote à main levée.</p></div>${timerHTML(30,'Sprint final')}${btns}<div class="drum center" id="drum"></div><button class="primary dark" data-a="ftcoin" data-drumbtn data-v="${top.join(',')}">Toujours égalité : tirage au sort</button>`;
+}
+
+/* ---------- FIN ---------- */
+function vEnd(){
+  const w=M(S.winner), t=totals();
+  const carders=Object.keys(S.cards).filter(p=>S.cards[p]).map(p=>esc(P(+p)));
+  const cardOut=S.out.filter(o=>o.how==='card').map(o=>esc(M(o.id).name));
+  return `<div class="winner"><div class="hint">L'an prochain, on court à</div><div class="huge">${esc(w.name)}</div>${w.info?`<p class="hint">${esc(w.info)}</p>`:''}<div class="finish"></div></div>
+  <div class="panel"><h2>Score final</h2>${S.alive.slice().sort((a,b)=>t[b]-t[a]).map((id,i)=>bib(id,i+1,t[id]+' pts',id===S.winner?'gold':'')).join('')}</div>
+  <div class="panel"><h2>Les cartons rouges</h2><p>${carders.length?`Joués par ${carders.join(', ')}${cardOut.length?`, contre ${cardOut.join(', ')}`:''}.`:"Personne n'a dégainé."}</p></div>
+  <div class="panel"><h2>Le parcours</h2>${outList().replace('<div class="sep"></div>','')}</div>
+  ${dock(`<button class="primary dark" data-a="newGame">Nouvelle partie</button>`)}`;
+}
+
+/* ---------- actions ---------- */
+const A={
+  undo(){if(!H.length)return;S=JSON.parse(H.pop());D={};save();render()},
+  reset(){if(!confirm('Recommencer une nouvelle partie ? Les coureurs et la liste sont conservés.'))return;S=fresh(S);H=[];D={};save();render()},
+  newGame(){S=fresh(S);H=[];D={};save();render()},
+  addPlayer(){S.players.push('');save();render()},
+  delPlayer(i){S.players.splice(+i,1);save();render()},
+  example(){S.text=EXAMPLE;save();render()},
+  start(){
+    const names=S.players.map(p=>p.trim());
+    if(names.some(n=>!n)){D.err='Chaque coureur doit avoir un prénom.';return render()}
+    if(new Set(names.map(n=>n.toLowerCase())).size!==names.length){D.err='Deux coureurs portent le même prénom.';return render()}
+    const list=parseList(S.text);
+    if(list.length<4){D.err='Il faut au moins 4 marathons dans la liste.';return render()}
+    commit(s=>{s.players=names;s.marathons=list;s.phase='qual';s.stage='handoff';s.voter=0;s.qual={};s.cards={};s.out=[]});
+  },
+  iam(){soft(s=>s.stage='ballot')},
+  qsel(id){const need=Math.min(3,S.marathons.length);D.sel=D.sel||[];const i=D.sel.indexOf(id);if(i>=0)D.sel.splice(i,1);else if(D.sel.length<need)D.sel.push(id);render()},
+  qvalid(){const sel=(D.sel||[]).slice();commit(s=>{s.qual[s.voter]=sel;s.voter++;s.stage=s.voter>=s.players.length?'ready':'handoff'})},
+  qreveal(){commit(s=>{computeQual(s);s.phase='qr'})},
+  qdraw(){const q=S.qr,n=q.ranked.length,revealed=q.ranked.slice(n-q.step),pool=q.coin.cands.filter(id=>!revealed.includes(id)),win=q.ranked[n-1-q.step];
+    runDrum(pool.map(id=>M(id).name),M(win).name,()=>soft(s=>s.qr.step++))},
+  qnext(){soft(s=>s.qr.step++)},
+  toPlead(){commit(s=>{s.phase='plead'})},
+  toElim(){commit(s=>{s.round=1;s.ballots=[];s.revote=null;s.rv=null;s.voter=0;
+    if(s.alive.length<=3){s.phase='final';s.stage='lobby';s.final={alloc:{},order:null,step:0}}else{s.phase='elim';s.stage='lobby'}})},
+  startVote(){soft(s=>{s.stage='handoff';s.voter=0})},
+  esel(id){D.t=id;render()},
+  toggleCard(){D.card=!D.card;render()},
+  evalid(){const b={p:S.voter,type:D.card?'card':'vote',target:D.t};commit(s=>{s.ballots.push(b);s.voter++;s.stage=s.voter>=s.players.length?'ready':'handoff'})},
+  resolve(){commit(s=>{resolveRound(s);s.stage='reveal'})},
+  rvnext(){soft(s=>s.rv.step++)},
+  rvcoin(){const r=S.rv;runDrum(r.coin.map(id=>M(id).name),M(r.targets[0]).name,()=>soft(s=>s.rv.coinDone=true))},
+  applyElim(){commit(s=>{const r=s.rv;r.targets.forEach(id=>s.out.push({id,round:s.round,how:r.kind==='card'?'card':'vote'}));s.alive=s.alive.filter(x=>!r.targets.includes(x));
+    const toFinal=s.alive.length<=3||(r.kind==='stay'&&r.toFinal);
+    s.ballots=[];s.revote=null;s.rv=null;s.voter=0;
+    if(toFinal){s.phase='final';s.stage='lobby';s.final={alloc:{},order:null,step:0}}else{s.round++;s.stage='lobby'}})},
+  fplus(id){D.a=D.a||{};D.a[id]=(D.a[id]||0)+1;render()},
+  fminus(id){D.a=D.a||{};D.a[id]=Math.max(0,(D.a[id]||0)-1);render()},
+  fvalid(){const a={};S.alive.forEach(id=>a[id]=(D.a&&D.a[id])||0);commit(s=>{s.final.alloc[s.voter]=a;s.voter++;s.stage=s.voter>=s.players.length?'ready':'handoff'})},
+  fstart(){commit(s=>{s.final.order=shuffle(s.players.map((_,i)=>i));s.final.step=0;s.stage='reveal'})},
+  fnext(){soft(s=>s.final.step++)},
+  setWinner(id){commit(s=>{s.winner=id;s.phase='end'})},
+  ftcoin(v){const ids=v.split(','),w=pick(ids);runDrum(ids.map(id=>M(id).name),M(w).name,()=>commit(s=>{s.winner=w;s.phase='end'}))},
+  tstart(){if(tmr)return;const el=document.getElementById('tval');if(!el)return;if(tRem<=0)tRem=tSec;el.classList.remove('ding');
+    tmr=setInterval(()=>{tRem--;const e=document.getElementById('tval');if(!e){stopTimer();return}e.textContent=fmt(Math.max(tRem,0));
+      if(tRem<=0){stopTimer();e.classList.add('ding');try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(x){}}},1000)},
+  treset(){stopTimer();tRem=tSec;const el=document.getElementById('tval');if(el){el.textContent=fmt(tSec);el.classList.remove('ding')}}
+};
+
+function render(){
+  stopTimer();stopDrum();
+  const views={setup:vSetup,qual:vQual,qr:vQualReveal,plead:vPlead,elim:vElim,final:vFinal,end:vEnd};
+  const app=document.getElementById('app');
+  app.innerHTML=header()+route()+`<main>${(views[S.phase]||vSetup)()}</main>`;
+  const tv=document.getElementById('tval');
+  if(tv){const m=tv.textContent.split(':');tSec=(+m[0])*60+(+m[1]);tRem=tSec}
+  const key=[S.phase,S.stage,S.voter,S.round,S.rv&&S.rv.step,S.qr&&S.qr.step,S.final&&S.final.step].join('|');
+  if(key!==lastKey){window.scrollTo(0,0);lastKey=key}
+}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const f=A[b.dataset.a];if(f)f(b.dataset.v,b)});
+document.addEventListener('input',e=>{const t=e.target;
+  if(t.dataset.in==='player'){S.players[+t.dataset.i]=t.value;save()}
+  else if(t.dataset.in==='text'){S.text=t.value;save();const c=document.getElementById('cnt');if(c)c.textContent=parseList(S.text).length}});
+
+load();render();
+</script>
+</body>
+</html>
