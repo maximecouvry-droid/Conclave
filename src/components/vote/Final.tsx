@@ -75,11 +75,12 @@ export function FinalReveal({ v }: { v: VP }) {
   const lead = Math.max(...Object.values(part));
   const maxPossible = v.players.length * 10;
 
-  const [coinDone, setCoinDone] = useState(!f.tieCoin);
+  const [drumDone, setDrumDone] = useState(!!f.tieCoin);
+  const coinDone = !f.tieCoin || drumDone;
   const [drum, setDrum] = useState(false);
   useEffect(() => {
-    if (f.tieCoin && !coinDone && !drum) setDrum(true);
-  }, [f.tieCoin, coinDone, drum]);
+    if (f.tieCoin && !drumDone && !drum) setDrum(true);
+  }, [f.tieCoin, drumDone, drum]);
 
   const complete = shown >= n;
   const top = f.top ?? [];
@@ -126,7 +127,7 @@ export function FinalReveal({ v }: { v: VP }) {
             <button key={id} className="primary" style={{ marginBottom: 8 }} disabled={v.busy} onClick={() => v.act('set-winner', { id })}>{v.M(id).name} l&apos;emporte à main levée</button>
           )) : null}
           {f.tieCoin && !coinDone && drum
-            ? <Drum names={f.tieCoin.cands.map((id) => v.M(id).name)} result={v.M(f.tieCoin.winner).name} onDone={() => { setDrum(false); setCoinDone(true); }} />
+            ? <Drum names={f.tieCoin.cands.map((id) => v.M(id).name)} result={v.M(f.tieCoin.winner).name} onDone={() => { setDrum(false); setDrumDone(true); }} />
             : <div className="drum center">{f.tieCoin && coinDone ? v.M(f.tieCoin.winner).name : ''}</div>}
           {v.me?.isHost
             ? f.tieCoin

@@ -77,11 +77,12 @@ export function ElimReveal({ v }: { v: VP }) {
   const rv = s.rv!;
   const alive = s.alive ?? [];
   const card = rv.card;
-  const [coinDone, setCoinDone] = useState(!card?.coin || !!card?.target);
+  const [drumDone, setDrumDone] = useState(!!card?.target); // déjà tiré avant mon arrivée : pas d'animation
+  const coinDone = !card?.coin || drumDone;
   const [drum, setDrum] = useState(false);
   useEffect(() => {
-    if (card?.coin && card.target && !coinDone && !drum) setDrum(true);
-  }, [card?.coin, card?.target, coinDone, drum]);
+    if (card?.coin && card.target && !drumDone && !drum) setDrum(true);
+  }, [card?.coin, card?.target, drumDone, drum]);
 
   const title = <div className="kicker">Tour {v.room.round}, dépouillement</div>;
   const names = (ids: string[]) => ids.map((id) => v.M(id).name).join(' et ');
@@ -106,7 +107,7 @@ export function ElimReveal({ v }: { v: VP }) {
             <>
               <p className="lede" style={{ margin: '0 auto' }}>Plusieurs cartons sur des marathons différents. Un seul sort : tirage au sort.</p>
               {drum && card.target
-                ? <Drum names={card.coin.map((id) => v.M(id).name)} result={v.M(card.target).name} onDone={() => { setDrum(false); setCoinDone(true); }} />
+                ? <Drum names={card.coin.map((id) => v.M(id).name)} result={v.M(card.target).name} onDone={() => { setDrum(false); setDrumDone(true); }} />
                 : <div className="drum">🎲</div>}
             </>
           ) : (
