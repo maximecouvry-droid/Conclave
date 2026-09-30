@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import type { VP } from '../tabctx';
 import Bib from '../Bib';
+import Meta from '../Meta';
 import { Dock, Drum, Hint, HostDock, OutList, Timer, VoteStatus, Voted, shuffle } from './shared';
 
 export function FinalLobby({ v }: { v: VP }) {
@@ -10,7 +11,7 @@ export function FinalLobby({ v }: { v: VP }) {
     <>
       <div className="kicker">Finale</div>
       <h2>Les {alive.length} finalistes</h2>
-      <p className="hint">Chacun répartit en secret ses points, 6 maximum sur un même marathon. Qui a joué son carton rouge n&apos;en a que 5.</p>
+      <p className="hint">Chacun répartit en secret ses points, 7 maximum sur un même marathon. Qui a joué son carton rouge n&apos;a que 5 points, et 4 maximum sur un même marathon.</p>
       {alive.map((id, i) => <Bib key={id} m={v.M(id)} no={i + 1} cls="gold" />)}
       <Timer v={v} dur={60} label="Derniers discours" />
       <OutList v={v} />
@@ -27,7 +28,7 @@ export function FinalBallot({ v }: { v: VP }) {
   const [a, setA] = useState<Record<string, number>>({});
   const [ord] = useState(() => shuffle(alive));
   const budget = v.me?.cardAvailable ? 10 : 5;
-  const cap = Math.min(6, budget);
+  const cap = budget === 5 ? 4 : 7;
   const used = Object.values(a).reduce((x, y) => x + y, 0);
   const rem = budget - used;
 
@@ -44,7 +45,7 @@ export function FinalBallot({ v }: { v: VP }) {
         const val = a[id] ?? 0;
         return (
           <div key={id} className="alloc">
-            <span className="nm">{v.M(id).name}</span>
+            <div className="am"><span className="nm">{v.M(id).name}</span><Meta slug={v.M(id).slug} /></div>
             <button className="step" disabled={val <= 0} onClick={() => bump(id, -1)} aria-label="Retirer un point">−</button>
             <span className="v">{val}</span>
             <button className="step" disabled={val >= cap || rem <= 0} onClick={() => bump(id, 1)} aria-label="Ajouter un point">+</button>

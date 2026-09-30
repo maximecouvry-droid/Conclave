@@ -7,8 +7,11 @@ import { randomInt } from 'node:crypto';
  * (tambour, dés) n'est que visuelle côté client.
  */
 
-export const NQ = 7; // nombre de qualifiés
-export const FINAL_CAP = 6; // max de points sur un même marathon
+export const NQ = 10; // nombre de qualifiés
+export const QUAL_PICKS = 5; // choix par joueur aux qualifs
+export const FINAL_CAP = 7; // max de points sur un même marathon
+export const FINAL_CAP_CARD = 4; // idem pour qui a joué son carton rouge (5 points)
+export const finalCap = (cardUsed: boolean) => (cardUsed ? FINAL_CAP_CARD : FINAL_CAP);
 
 export const rnd = (n: number) => randomInt(n);
 export const pick = <T,>(a: T[]): T => a[rnd(a.length)];
@@ -23,7 +26,7 @@ export function shuffle<T>(a: T[]): T[] {
 
 /* ---------- 1. Qualifs ---------- */
 
-export const qualPickCount = (nMarathons: number) => Math.min(3, nMarathons);
+export const qualPickCount = (nMarathons: number) => Math.min(QUAL_PICKS, nMarathons);
 
 export interface QualPlan {
   /** qualifiés, du 1er au dernier */
@@ -102,7 +105,7 @@ export const finalBudget = (cardUsed: boolean) => (cardUsed ? 5 : 10);
 export function validFinalAlloc(alloc: unknown, alive: string[], cardUsed: boolean): Record<string, number> | null {
   if (!alloc || typeof alloc !== 'object') return null;
   const budget = finalBudget(cardUsed);
-  const cap = Math.min(FINAL_CAP, budget);
+  const cap = finalCap(cardUsed);
   const out: Record<string, number> = {};
   let sum = 0;
   for (const id of alive) {

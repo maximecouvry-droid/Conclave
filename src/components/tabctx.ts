@@ -15,7 +15,7 @@ export interface TabProps {
 /** Props communes des écrans de vote. */
 export interface VP extends TabProps {
   /** marathon par id */
-  M: (id: string) => { name: string; info: string };
+  M: (id: string) => { name: string; info: string; slug: string | null };
   /** nom d'un joueur par id */
   PN: (id: string) => string;
   /** action d'hôte (serveur) */

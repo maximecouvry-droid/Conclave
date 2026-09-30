@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/client';
 import Rules from './Rules';
 import type { TabProps, VP } from './tabctx';
@@ -37,7 +38,7 @@ export default function VoteTab(props: TabProps) {
   const v: VP = {
     ...props,
     busy,
-    M: (id) => marathons.find((m) => m.id === id) ?? { name: '?', info: '' },
+    M: (id) => marathons.find((m) => m.id === id) ?? { name: '?', info: '', slug: null },
     PN: (id) => players.find((p) => p.id === id)?.name ?? '?',
     act: async (type, extra = {}) => {
       await run(() => api(`/api/rooms/${room.code}/action`, { type, ...extra }, creds));
@@ -51,7 +52,7 @@ export default function VoteTab(props: TabProps) {
   };
 
   if (room.phase === 'lobby') {
-    const ready = marathons.length >= 4 && players.length >= 3;
+    const ready = players.length >= 3;
     return (
       <>
         <div className="stage" style={{ paddingBottom: 8 }}>
@@ -59,11 +60,13 @@ export default function VoteTab(props: TabProps) {
           <h2>Conclave bientôt ouvert</h2>
           <p className="hint">En attendant, relis les règles.</p>
         </div>
+        <div className="panel"><h2>Coureurs <span className="count">{players.length}</span></h2><p className="hint" style={{ margin: 0 }}>{players.map((p) => p.name).join(', ')}</p></div>
         <div className="panel"><h2>Règles</h2><Rules /></div>
+        <Link className="primary dark" href="/marathons" style={{ marginBottom: 14 }}>Découvrir les marathons</Link>
         {me?.isHost ? (
           <div className="dock">
             <button className="primary" disabled={busy || !ready} onClick={async () => { await run(() => api(`/api/rooms/${room.code}/open`, {}, creds)); await refresh(); }}>
-              {ready ? 'Ouvrir le Conclave' : 'Il faut 4 marathons et 3 coureurs'}
+              {ready ? 'Ouvrir le Conclave' : 'Il faut au moins 3 coureurs'}
             </button>
           </div>
         ) : null}

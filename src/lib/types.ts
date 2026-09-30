@@ -71,6 +71,7 @@ export interface Marathon {
   position: number;
   name: string;
   info: string;
+  slug: string | null;
   status: 'pool' | 'alive' | 'out' | 'winner';
   qual_count: number | null;
 }

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { VP } from '../tabctx';
 import Bib from '../Bib';
+import Meta from '../Meta';
 
 export const shuffle = <T,>(a: T[]): T[] => {
   const r = a.slice();
@@ -64,16 +65,24 @@ export function Voted({ v, label, type, onEdit }: { v: VP; label: string; type: 
 /** Ce que voit un joueur qui n'a pas encore voté : à afficher sous le bulletin. */
 export const Ballot = ({ v, label, type }: { v: VP; label: string; type: string }) => <VoteStatus v={v} label={label} type={type} />;
 
-/** Marathon cliquable d'un bulletin. */
-export function Opt({ m, on, radio, onClick }: { m: { name: string; info: string }; on: boolean; radio?: boolean; onClick: () => void }) {
+/** Marathon cliquable d'un bulletin (avec ses infos et son « + Notes perso »). */
+export function Opt({ m, on, radio, onClick }: { m: { name: string; info: string; slug?: string | null }; on: boolean; radio?: boolean; onClick: () => void }) {
   return (
-    <button className={`opt ${radio ? 'radio' : ''} ${on ? 'on' : ''}`} onClick={onClick}>
+    <div
+      role={radio ? 'radio' : 'checkbox'}
+      aria-checked={on}
+      tabIndex={0}
+      className={`opt ${radio ? 'radio' : ''} ${on ? 'on' : ''}`}
+      onClick={onClick}
+      onKeyDown={(e) => (e.key === ' ' || e.key === 'Enter') && (e.preventDefault(), onClick())}
+    >
       <span className="ck"></span>
       <span className="tx">
         <span className="nm">{m.name}</span>
         {m.info ? <span className="inf">{m.info}</span> : null}
+        <Meta slug={m.slug} />
       </span>
-    </button>
+    </div>
   );
 }
 

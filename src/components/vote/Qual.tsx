@@ -5,7 +5,7 @@ import Bib from '../Bib';
 import { Drum, HostDock, Hint, Opt, VoteStatus, Voted, Dock, place, shuffle } from './shared';
 
 export function QualBallot({ v }: { v: VP }) {
-  const need = Math.min(3, v.marathons.length);
+  const need = Math.min(5, v.marathons.length);
   const saved = v.me?.myBallot?.type === 'qual' ? ((v.me.myBallot.payload.picks as string[]) ?? []) : null;
   const [editing, setEditing] = useState(false);
   const [sel, setSel] = useState<string[]>(saved ?? []);

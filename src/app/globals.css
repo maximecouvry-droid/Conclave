@@ -175,3 +175,48 @@ code{font-size:14px;background:var(--bg);padding:1px 6px;border-radius:6px}
 textarea+.link{display:block}
 .tabs a{flex:1;text-align:center;text-decoration:none;border-radius:10px;padding:10px 8px;font-family:var(--disp);font-weight:700;font-size:20px;color:var(--muted)}
 .tabs a.on{background:var(--blue);color:#fff}
+
+/* ---------- V2 : blocs marathon enrichis ---------- */
+a.primary{text-decoration:none}
+.bib .bhd{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.bib .tag{position:static;transform:none;white-space:nowrap}
+.bib.link{color:inherit;text-decoration:none}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.stats{display:flex;flex-wrap:wrap;gap:2px 12px;color:var(--muted);font-size:13.5px;font-weight:500}
+.stats span{white-space:nowrap}
+.plus{flex:none;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font-weight:700;font-size:18px;line-height:1;display:grid;place-items:center;padding:0}
+.notesbtn{display:flex;flex-direction:column;gap:1px;margin-top:8px;padding:8px 12px;border-radius:10px;background:var(--blue-soft);color:var(--blue);text-decoration:none;font-size:14px}
+.notesbtn span{color:var(--ink);opacity:.75;font-size:13px}
+.opt{cursor:pointer;user-select:none}
+.opt .tx{flex:1}
+.alloc .am{flex:1;min-width:0;display:flex;flex-direction:column}
+.alloc .am .nm{flex:none}
+
+/* carte */
+.mapbox{height:250px;border-radius:18px;overflow:hidden;margin:0 0 16px;background:var(--surface);position:relative;z-index:0}
+.leaflet-container{font-family:var(--body)}
+:root[data-theme="dark"] .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.88)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.88)}}
+.pin-label{font-family:var(--disp);font-weight:700;font-size:16px}
+
+/* fiche détaillée */
+.back{background:none;border:0;color:var(--blue);font-weight:600;padding:6px 0;font-size:16px}
+.hero{position:relative;border-radius:18px;overflow:hidden;margin:4px 0 16px;background:var(--surface);aspect-ratio:16/10}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,0) 60%)}
+.hero .cap{position:absolute;left:16px;right:16px;bottom:14px;color:#fff}
+.hero .cap h1{margin:0;color:#fff;font-size:clamp(44px,14vw,64px)}
+.hero .cap .when{font-weight:600;opacity:.92;text-transform:capitalize}
+.hero .credit{position:absolute;right:10px;top:8px;font-size:11px;color:#fff;opacity:.7}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.fact{background:var(--surface);border-radius:14px;padding:12px 14px}
+.fact .k{color:var(--muted);font-size:13px;font-weight:600}
+.fact .v{font-family:var(--disp);font-weight:800;font-size:26px;line-height:1.1;margin-top:2px}
+.fact.wide{grid-column:1/-1}
+.fact.wide .v{font-size:22px}
+.course{width:100%;border-radius:12px;background:#fff;display:block}
+.stars{display:flex;gap:6px;margin-bottom:6px}
+.stars button{border:0;background:none;font-size:34px;line-height:1;padding:2px;color:var(--line)}
+.stars button.on{color:var(--yellow)}
+.links{display:flex;flex-direction:column;gap:2px}
+.links a{color:var(--blue);font-weight:600;padding:6px 0;text-decoration:none}

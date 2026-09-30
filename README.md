@@ -5,9 +5,23 @@ Règles, déroulé et design repris de la V1 (`reference/marathon-du-marathon-v1
 
 Stack : Next.js 15 (App Router) · Supabase (Postgres + Realtime) · Vercel.
 
-## Deux onglets
-1. **Marathons** : la liste (l'hôte la colle au format `Ville ; critère ; critère`).
-2. **Conclave** : le vote. Tant que l'hôte n'a pas ouvert le Conclave : les règles + « Conclave bientôt ouvert ».
+## Pages
+- `/` : créer / rejoindre une salle (on y revient automatiquement tant qu'on n'a pas quitté sa salle) + « Découvrir les marathons ».
+- `/marathons` : carte + liste. `/marathons/[slug]` : fiche détaillée (photo, parcours, trajet ; ranking et notes perso stockés en local).
+- `/room/CODE` : la salle de vote. Avant l'ouverture : règles + « Conclave bientôt ouvert ».
+
+## Catalogue des marathons
+Liste fixée en amont dans la table Supabase `catalog` (source : base Notion « Choix marathon »).
+À l'ouverture du Conclave, les marathons de la salle sont copiés depuis le catalogue.
+```bash
+npm run catalog   # (re)génère data/marathons.json (coordonnées, photos Wikipedia)
+npm run seed      # envoie data/marathons.json dans Supabase
+```
+Migration à exécuter une fois dans le SQL Editor : `supabase/migration_002_catalog.sql`.
+
+## Règles de cette version
+Qualifs : 5 choix par joueur, 10 qualifiés. Finale : 10 points (7 max par marathon) ;
+carton rouge joué : 5 points (4 max par marathon).
 
 ## Sécurité (secret des bulletins)
 - Le navigateur (clé `anon`) ne peut que **lire** `rooms`, `players`, `marathons` (+ Realtime dessus).
