@@ -55,7 +55,6 @@ export default function MarathonDetail() {
   return (
     <>
       <header className="top">
-        <div className="brand"><i></i>Marathon du Marathon</div>
         <div className="tools"><ThemeToggle /></div>
       </header>
       <button className="back" onClick={() => (window.history.length > 1 ? router.back() : router.push('/marathons'))}>← Retour</button>

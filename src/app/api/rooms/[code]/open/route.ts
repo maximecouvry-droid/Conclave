@@ -18,7 +18,7 @@ export async function POST(req: Request, ctx: { params: Promise<{ code: string }
     if (cat.error) throw new HttpError(500, cat.error.message);
     const { count: np } = await db().from('players').select('id', { count: 'exact', head: true }).eq('room_id', a.room.id);
     if ((cat.data?.length ?? 0) < 4) throw new HttpError(400, 'Le catalogue de marathons est vide ou trop court');
-    if ((np ?? 0) < 3) throw new HttpError(400, 'Il faut au moins 3 joueurs dans la salle');
+    if ((np ?? 0) < 3) throw new HttpError(400, 'Il faut au moins 3 joueurs dans le conclave');
 
     await pushSnapshot(a.room.id);
     must(await db().from('marathons').delete().eq('room_id', a.room.id));

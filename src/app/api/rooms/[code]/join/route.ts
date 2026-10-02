@@ -13,12 +13,12 @@ export async function POST(req: Request, ctx: { params: Promise<{ code: string }
     const room = ensure<{ id: string; phase: string }>(
       await db().from('rooms').select('id,phase').eq('code', code.toUpperCase()).maybeSingle(),
       404,
-      'Salle introuvable',
+      'Conclave introuvable',
     );
-    if (room.phase !== 'lobby') throw new HttpError(409, 'Le Conclave a déjà commencé');
+    if (room.phase !== 'lobby') throw new HttpError(409, 'Ce conclave a déjà commencé');
 
     const { count } = await db().from('players').select('id', { count: 'exact', head: true }).eq('room_id', room.id);
-    if ((count ?? 0) >= MAX_PLAYERS) throw new HttpError(409, 'Salle pleine');
+    if ((count ?? 0) >= MAX_PLAYERS) throw new HttpError(409, 'Conclave complet');
 
     const p = await db().from('players').insert({ room_id: room.id, name: pseudo }).select('id').single();
     if (p.error) throw new HttpError(p.error.code === '23505' ? 409 : 500, p.error.code === '23505' ? 'Ce pseudo est déjà pris' : p.error.message);

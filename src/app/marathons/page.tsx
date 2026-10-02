@@ -26,7 +26,6 @@ export default function MarathonsPage() {
   return (
     <>
       <header className="top">
-        <div className="brand"><i></i>Marathon du Marathon</div>
         <div className="tools"><ThemeToggle /></div>
       </header>
       <Link className="back" href="/">← Retour</Link>

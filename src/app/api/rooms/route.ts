@@ -17,7 +17,7 @@ export async function POST(req: Request) {
       const r = await db().from('rooms').insert({ code: newCode(), state: { stage: 'lobby', voted: [] } }).select('id,code').maybeSingle();
       if (r.data) room = r.data;
     }
-    if (!room) throw new HttpError(500, 'Impossible de créer la salle');
+    if (!room) throw new HttpError(500, 'Impossible de créer le conclave');
 
     const p = await db().from('players').insert({ room_id: room.id, name: hostName }).select('id').single();
     if (p.error) throw new HttpError(500, p.error.message);

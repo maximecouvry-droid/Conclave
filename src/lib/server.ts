@@ -48,7 +48,7 @@ export interface Authed {
 export async function auth(code: string, playerId: unknown, token: unknown): Promise<Authed> {
   if (typeof playerId !== 'string' || typeof token !== 'string') throw new HttpError(401, 'Non identifié');
   const roomRes = await db().from('rooms').select('*').eq('code', code.toUpperCase()).maybeSingle();
-  const room = ensure(roomRes as { data: Room | null; error: { message: string } | null }, 404, 'Salle introuvable');
+  const room = ensure(roomRes as { data: Room | null; error: { message: string } | null }, 404, 'Conclave introuvable');
 
   const p = await db().from('players').select('id,name,room_id').eq('id', playerId).eq('room_id', room.id).maybeSingle();
   const player = ensure(p as { data: { id: string; name: string } | null; error: { message: string } | null }, 401, 'Joueur inconnu');

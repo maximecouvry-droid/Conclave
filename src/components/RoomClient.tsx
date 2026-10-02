@@ -20,9 +20,9 @@ export default function RoomClient({ code }: { code: string }) {
   if (!room)
     return (
       <div className="stage">
-        <h2>Salle introuvable</h2>
+        <h2>Conclave introuvable</h2>
         <p className="hint">Vérifie le code : {code}</p>
-        <Link className="link" href="/">Créer ou rejoindre une salle</Link>
+        <Link className="link" href="/">Créer ou rejoindre un conclave</Link>
       </div>
     );
 
@@ -44,7 +44,7 @@ export default function RoomClient({ code }: { code: string }) {
     router.push('/');
   };
   const deleteRoom = async () => {
-    if (!confirm('Supprimer la salle pour tout le monde ? Cette action est définitive.')) return;
+    if (!confirm('Supprimer le conclave pour tout le monde ? Cette action est définitive.')) return;
     try {
       await api(`/api/rooms/${code}/action`, { type: 'delete-room' }, creds);
       leave();
@@ -66,14 +66,13 @@ export default function RoomClient({ code }: { code: string }) {
   return (
     <>
       <header className="top">
-        <div className="brand"><i></i>Marathon du Marathon</div>
         <div className="tools">
           {me?.isHost ? <button className="ghost" onClick={undo}>Annuler</button> : null}
           <ThemeToggle />
         </div>
       </header>
 
-      <div className="roomcode">Salle <b>{code}</b> · {players.length} coureur{players.length > 1 ? 's' : ''}</div>
+      <div className="roomcode">Conclave <b>{code}</b> · {players.length} coureur{players.length > 1 ? 's' : ''}</div>
 
       {err ? <div className="err">{err}</div> : null}
       <VoteTab {...ctx} />
@@ -82,8 +81,8 @@ export default function RoomClient({ code }: { code: string }) {
       <div className="row2" style={{ marginBottom: 24 }}>
         {me?.isHost && room.phase !== 'lobby' ? <button className="ghost" onClick={restart}>Recommencer</button> : null}
         {me?.isHost
-          ? <button className="ghost" onClick={deleteRoom}>Supprimer la salle</button>
-          : <button className="ghost" onClick={() => confirm('Quitter la salle ?') && leave()}>Quitter la salle</button>}
+          ? <button className="ghost" onClick={deleteRoom}>Supprimer le conclave</button>
+          : <button className="ghost" onClick={() => confirm('Quitter le conclave ?') && leave()}>Quitter le conclave</button>}
       </div>
     </>
   );
@@ -102,8 +101,8 @@ function JoinHere({ code, onDone, locked }: { code: string; onDone: () => void; 
   };
   return (
     <>
-      <h1>Salle {code}</h1>
-      {locked ? <div className="err">Le Conclave a déjà commencé, on ne peut plus rejoindre.</div> : null}
+      <h1>Conclave {code}</h1>
+      {locked ? <div className="err">Ce conclave a déjà commencé, on ne peut plus le rejoindre.</div> : null}
       {err ? <div className="err">{err}</div> : null}
       <div className="panel">
         <div className="prow"><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ton prénom" maxLength={20} autoComplete="off" /></div>
