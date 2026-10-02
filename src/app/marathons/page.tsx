@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useCatalog } from '@/lib/catalog';
-import ThemeToggle from '@/components/ThemeToggle';
 import Bib from '@/components/Bib';
 import { loadRanks } from '@/lib/notes';
 
@@ -25,9 +24,6 @@ export default function MarathonsPage() {
   }, [list, by, ranks]);
   return (
     <>
-      <header className="top">
-        <div className="tools"><ThemeToggle /></div>
-      </header>
       <Link className="back" href="/">← Retour</Link>
       <h1>Marathons</h1>
       {sorted === null ? <p className="hint">Chargement…</p> : null}

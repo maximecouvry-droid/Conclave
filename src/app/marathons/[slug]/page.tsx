@@ -4,7 +4,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useCatalog, type CatalogMarathon } from '@/lib/catalog';
 import { fmtDate, fmtElevation, fmtLoops, fmtParticipants } from '@/lib/format';
 import { loadNote, saveNote } from '@/lib/notes';
-import ThemeToggle from '@/components/ThemeToggle';
 
 const Fact = ({ k, v, wide }: { k: string; v: string; wide?: boolean }) => (
   <div className={`fact ${wide ? 'wide' : ''}`}>
@@ -54,9 +53,6 @@ export default function MarathonDetail() {
 
   return (
     <>
-      <header className="top">
-        <div className="tools"><ThemeToggle /></div>
-      </header>
       <button className="back" onClick={() => (window.history.length > 1 ? router.back() : router.push('/marathons'))}>← Retour</button>
 
       {list === null ? <p className="hint">Chargement…</p> : null}

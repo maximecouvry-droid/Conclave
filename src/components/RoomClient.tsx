@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { api, forgetRoom, saveCreds } from '@/lib/client';
 import { useRoom } from '@/lib/useRoom';
-import ThemeToggle from './ThemeToggle';
 import VoteTab from './VoteTab';
 
 export default function RoomClient({ code }: { code: string }) {
@@ -65,14 +64,10 @@ export default function RoomClient({ code }: { code: string }) {
   const ctx = { room, players, marathons, me, creds, refresh, refreshMe, setErr };
   return (
     <>
-      <header className="top">
-        <div className="tools">
-          {me?.isHost ? <button className="ghost" onClick={undo}>Annuler</button> : null}
-          <ThemeToggle />
-        </div>
-      </header>
-
-      <div className="roomcode">Conclave <b>{code}</b> · {players.length} coureur{players.length > 1 ? 's' : ''}</div>
+      <div className="roomline">
+        <div className="roomcode">Conclave <b>{code}</b> · {players.length} coureur{players.length > 1 ? 's' : ''}</div>
+        {me?.isHost ? <button className="ghost" onClick={undo}>Annuler</button> : null}
+      </div>
 
       {err ? <div className="err">{err}</div> : null}
       <VoteTab {...ctx} />

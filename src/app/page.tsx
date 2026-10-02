@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { api, currentRoom, saveCreds } from '@/lib/client';
 import { useCatalog } from '@/lib/catalog';
-import ThemeToggle from '@/components/ThemeToggle';
 import CheersArt from '@/components/CheersArt';
 
 type Mode = 'join' | 'create';
@@ -51,9 +50,6 @@ export default function Home() {
 
   return (
     <div className="hp">
-      <header className="top">
-        <div className="tools"><ThemeToggle /></div>
-      </header>
 
       <section className="hp-top">
         <CheersArt className="hp-art" />
