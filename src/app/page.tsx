@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { api, currentRoom, saveCreds } from '@/lib/client';
 import { useCatalog } from '@/lib/catalog';
 import ThemeToggle from '@/components/ThemeToggle';
+import CheersArt from '@/components/CheersArt';
 
 type Mode = 'join' | 'create';
 
@@ -50,15 +51,26 @@ export default function Home() {
 
   return (
     <div className="hp">
-      <div className="hp-glow" aria-hidden="true"></div>
       <header className="top">
         <div className="tools"><ThemeToggle /></div>
       </header>
 
-      <section className="hp-hero">
-        <h1 className="word">Conclave</h1>
-        <div className="route-line" aria-hidden="true"><span></span><i></i></div>
+      <section className="hp-top">
+        <CheersArt className="hp-art" />
+        <h1 className="hp-word">Conclave</h1>
+        <p className="hp-tag">Votez. Trinquez.</p>
       </section>
+
+      <Link className="discover" href="/marathons">
+        <span className="pin" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+        </span>
+        <span className="dtx">
+          <b>Découvrir les marathons</b>
+          <small>{catalog ? `${catalog.length} courses · carte et fiches` : 'Carte et fiches'}</small>
+        </span>
+        <span className="arr" aria-hidden="true">→</span>
+      </Link>
 
       <section className="ticket">
         <div className="seg2" role="tablist">
@@ -97,16 +109,6 @@ export default function Home() {
         </form>
       </section>
 
-      <Link className="discover" href="/marathons">
-        <span className="pin" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
-        </span>
-        <span className="dtx">
-          <b>Découvrir les marathons</b>
-          <small>{catalog ? `${catalog.length} courses · carte et fiches` : 'Carte et fiches'}</small>
-        </span>
-        <span className="arr" aria-hidden="true">→</span>
-      </Link>
     </div>
   );
 }

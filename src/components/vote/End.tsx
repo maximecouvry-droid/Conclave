@@ -16,7 +16,7 @@ export function End({ v }: { v: VP }) {
         <div className="hint">L&apos;an prochain, on court à</div>
         <div className="huge">{w.name}</div>
         {w.info ? <p className="hint">{w.info}</p> : null}
-        <div className="finish"></div>
+        <div className="cheers" aria-hidden="true">🍻</div>
       </div>
       <div className="panel">
         <h2>Score final</h2>
