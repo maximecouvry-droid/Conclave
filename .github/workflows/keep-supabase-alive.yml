@@ -8,6 +8,9 @@ on:
     - cron: "0 8 */3 * *"
   workflow_dispatch: {}   # bouton « Run workflow » pour le lancer à la main
 
+permissions:
+  actions: write   # pour que le workflow puisse se réactiver lui-même (dernière étape)
+
 jobs:
   ping:
     runs-on: ubuntu-latest
@@ -22,3 +25,10 @@ jobs:
             -H "apikey: $SUPABASE_ANON_KEY" \
             -H "Authorization: Bearer $SUPABASE_ANON_KEY"
           echo
+
+      # GitHub désactive les workflows planifiés après 60 jours sans activité sur un dépôt public.
+      # Se ré-activer à chaque passage (tous les 3 jours) remet ce compteur à zéro, sans commit.
+      - name: Se réactiver (anti-désactivation à 60 jours)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method PUT "repos/$GITHUB_REPOSITORY/actions/workflows/keep-supabase-alive.yml/enable"
