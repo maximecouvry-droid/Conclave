@@ -28,3 +28,44 @@ export function loadRanks(slugs: string[]): Record<string, number> {
   slugs.forEach((s) => (out[s] = loadNote(s).rank));
   return out;
 }
+
+/* ---------- Transfert d'un appareil à l'autre (lien avec les notes dans le #fragment) ---------- */
+
+export type NotesExport = Record<string, PersonalNote>;
+
+/** Toutes les notes / étoiles saisies sur cet appareil (les marathons sans rien sont ignorés). */
+export function exportNotes(slugs: string[]): NotesExport {
+  const out: NotesExport = {};
+  slugs.forEach((s) => {
+    const n = loadNote(s);
+    if (n.note.trim() || n.rank) out[s] = n;
+  });
+  return out;
+}
+
+const b64 = {
+  enc: (s: string) => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''),
+  dec: (s: string) => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/')))),
+};
+
+export const encodeNotes = (n: NotesExport) => b64.enc(JSON.stringify(n));
+
+export function decodeNotes(code: string): NotesExport | null {
+  try {
+    const raw = JSON.parse(b64.dec(code));
+    if (!raw || typeof raw !== 'object') return null;
+    const out: NotesExport = {};
+    for (const [slug, v] of Object.entries(raw as Record<string, { note?: unknown; rank?: unknown }>)) {
+      if (!/^[a-z0-9-]{1,40}$/.test(slug)) continue;
+      out[slug] = { note: String(v?.note ?? '').slice(0, 5000), rank: Math.max(0, Math.min(5, Number(v?.rank) || 0)) };
+    }
+    return out;
+  } catch {
+    return null;
+  }
+}
+
+/** Fusionne : la note reçue remplace la locale pour chaque marathon présent dans le lien. */
+export function importNotes(n: NotesExport) {
+  Object.entries(n).forEach(([slug, v]) => saveNote(slug, v));
+}
