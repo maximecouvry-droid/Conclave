@@ -15,7 +15,15 @@
     "course_url": "https://antwerpmarathon.com/fr/le-parcours/",
     "from_paris": "🚄 Train direct ~2h (Eurostar)",
     "other_races": "Semi et 10 km le même jour (horaires à confirmer)",
-    "participants_source": null
+    "participants_source": null,
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 14.5,
+    "temp_min": 8.9,
+    "rain_mm": 2.3,
+    "rain_day_mm": 0,
+    "wind_kmh": 12,
+    "weather_opinion": "Mi-octobre : ~8-15°C, températures idéales pour courir. Climat belge : pluie et vent assez fréquents, mais parcours plat et peu exposé."
   },
   {
     "slug": "bucarest",
@@ -33,7 +41,15 @@
     "course_url": "https://bucharest-marathon.com/bucharest-marathon-maratonul-bucuresti-42km-42k/",
     "from_paris": "✈️ Vol direct ~3h",
     "other_races": "Semi, 10 km, relais 4×, fun race 2,5 km (10-11 oct., jour et horaire du semi à confirmer)",
-    "participants_source": "https://bucharest-marathon.com/live-results-bucharest-marathon-2025/"
+    "participants_source": "https://bucharest-marathon.com/live-results-bucharest-marathon-2025/",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 23.9,
+    "temp_min": 13.5,
+    "rain_mm": 17.3,
+    "rain_day_mm": 0,
+    "wind_kmh": 15,
+    "weather_opinion": "Début octobre en général sec et doux (~8-19°C). 2026 était nettement plus chaud que la normale. Risque de chaleur si l'automne reste doux."
   },
   {
     "slug": "budapest",
@@ -51,7 +67,15 @@
     "course_url": "https://marathon.runinbudapest.com/42-km-spar-budapest-marathon/",
     "from_paris": "✈️ Vol direct ~2h15",
     "other_races": "Dimanche : semi, 30 km, 14 km, relais (horaire semi à confirmer) ; samedi : 10 km, 5 km",
-    "participants_source": "https://bsieredmenylista.hu/spar-budapest-maraton-2024/39-spar-budapest-maraton/"
+    "participants_source": "https://bsieredmenylista.hu/spar-budapest-maraton-2024/39-spar-budapest-maraton/",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 17.4,
+    "temp_min": 9.5,
+    "rain_mm": 14.6,
+    "rain_day_mm": 6.4,
+    "wind_kmh": 13,
+    "weather_opinion": "Mi-octobre souvent clément : ~8-18°C, assez sec et ensoleillé en général. Bonnes conditions, quelques averses possibles."
   },
   {
     "slug": "catane",
@@ -69,7 +93,15 @@
     "course_url": null,
     "from_paris": "✈️ Vol direct ~2h35",
     "other_races": null,
-    "participants_source": "https://www.endu.net/fr/events/catania-marathon/results?eventId=94627&raceId=57892&categoryId=0&optionId=588678"
+    "participants_source": "https://www.endu.net/fr/events/catania-marathon/results?eventId=94627&raceId=57892&categoryId=0&optionId=588678",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 17.4,
+    "temp_min": 10.3,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 8,
+    "weather_opinion": "Hiver doux sur la côte sicilienne : 10-17°C en général, bon pour courir. Décembre reste la saison humide : averses possibles, rarement du froid. Risque principal = pluie/vent."
   },
   {
     "slug": "cologne",
@@ -87,7 +119,15 @@
     "course_url": "https://generali-koeln-marathon.de/en/courses/",
     "from_paris": "🚄 Train direct ~3h20 (Eurostar)",
     "other_races": null,
-    "participants_source": "https://generali-koeln-marathon.de/en/results/2025-results/#1_6C2959"
+    "participants_source": "https://generali-koeln-marathon.de/en/results/2025-results/#1_6C2959",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 20.7,
+    "temp_min": 9.9,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 7,
+    "weather_opinion": "Début octobre : normalement ~8-16°C, bien pour courir. 2026 était exceptionnellement doux (~21°C). Pluie possible, sinon conditions plutôt favorables."
   },
   {
     "slug": "dublin",
@@ -105,7 +145,15 @@
     "course_url": "https://irishlifedublinmarathon.ie/course-and-start-finish/",
     "from_paris": "✈️ Vol direct ~1h30",
     "other_races": "Aucune course plus courte le jour du marathon",
-    "participants_source": "https://raceresults.dublinmarathon.ie/"
+    "participants_source": "https://raceresults.dublinmarathon.ie/",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 11.2,
+    "temp_min": 6.2,
+    "rain_mm": 4.2,
+    "rain_day_mm": 0.3,
+    "wind_kmh": 29,
+    "weather_opinion": "Fin octobre : ~6-12°C, bonne température mais très variable. Pluie fréquente et vent notable, parfois fort. Prévoir plusieurs tenues."
   },
   {
     "slug": "florence",
@@ -123,7 +171,15 @@
     "course_url": "https://www.firenzemarathon.it/en/marathon/",
     "from_paris": "✈️ Vol direct ~1h50",
     "other_races": "Relais 3×7 km le samedi, 10 km",
-    "participants_source": "https://www.corrieredellosport.it/news/altri-sport/running/2025/12/22-145415500/classifica_maratone_italiane_19mila_atleti_al_traguardo_roma_prima"
+    "participants_source": "https://www.corrieredellosport.it/news/altri-sport/running/2025/12/22-145415500/classifica_maratone_italiane_19mila_atleti_al_traguardo_roma_prima",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 11.1,
+    "temp_min": 0.2,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 12,
+    "weather_opinion": "Fin novembre frais : ~3-12°C, départ souvent froid et brumeux. Novembre est le mois le plus pluvieux de l'année en Toscane : pluie fréquente, mais températures correctes pour un marathon."
   },
   {
     "slug": "la-rochelle",
@@ -141,7 +197,15 @@
     "course_url": null,
     "from_paris": "🚄 TGV direct ~3h",
     "other_races": "10 km, marathon en duo",
-    "participants_source": "https://marathondelarochelle.com/wp-content/uploads/2026/03/CLASSEMENT-SCRATCH-SportInnovation_marathon_compressed.pdf"
+    "participants_source": "https://marathondelarochelle.com/wp-content/uploads/2026/03/CLASSEMENT-SCRATCH-SportInnovation_marathon_compressed.pdf",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 12.7,
+    "temp_min": 8.5,
+    "rain_mm": 37.5,
+    "rain_day_mm": 19.1,
+    "wind_kmh": 24,
+    "weather_opinion": "Fin novembre océanique : ~4-11°C, humide et venteux, pluie fréquente. Températures correctes mais vent de bord de mer possible. Prévoir une tenue coupe-vent."
   },
   {
     "slug": "ljubljana",
@@ -153,13 +217,21 @@
     "elevation": "159",
     "half": "Oui en même temps",
     "participants": 2800,
-    "city_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/R%C3%ADo_Ljubljanica%2C_Liubliana%2C_Eslovenia%2C_2017-04-14%2C_DD_08_%28cropped%29.jpg/960px-R%C3%ADo_Ljubljanica%2C_Liubliana%2C_Eslovenia%2C_2017-04-14%2C_DD_08_%28cropped%29.jpg",
+    "city_image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Ljubljana_Old_Town%2C_Slovenia_%28Old_Camera%29_%2833286165680%29.jpg/960px-Ljubljana_Old_Town%2C_Slovenia_%28Old_Camera%29_%2833286165680%29.jpg",
     "course_image": "https://ljubljanskimaraton.si/upload/gallery/143/music.jpeg",
     "official_url": "https://ljubljanskimaraton.si/en/",
     "course_url": "https://ljubljanskimaraton.si/en/marathon",
     "from_paris": "✈️ Vol direct ~1h55",
     "other_races": null,
-    "participants_source": "https://ljubljanskimaraton.si/en/results/single?lm=29&cat=42Z"
+    "participants_source": "https://ljubljanskimaraton.si/en/results/single?lm=29&cat=42Z",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 14.7,
+    "temp_min": 3,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 8,
+    "weather_opinion": "Mi-octobre : ~5-15°C, matins frais voire brumeux, après-midis agréables. Bonnes conditions pour un marathon ; la pluie reste possible mais peu de vent."
   },
   {
     "slug": "loch-ness",
@@ -177,7 +249,15 @@
     "course_url": "https://www.caledoniangroupevents.co.uk/loch-ness-marathon/event/loch-ness-marathon",
     "from_paris": "✈️ Vol direct Édimbourg ~1h45 + 🚆 train ~3h30 jusqu'à Inverness",
     "other_races": "10 km et 5 km",
-    "participants_source": "https://caledoniangroupevents.co.uk/loch-ness-marathon/results/1/2025/"
+    "participants_source": "https://caledoniangroupevents.co.uk/loch-ness-marathon/results/1/2025/",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 14.8,
+    "temp_min": 9.2,
+    "rain_mm": 5.2,
+    "rain_day_mm": 4.2,
+    "wind_kmh": 21,
+    "weather_opinion": "Fraîcheur idéale (~8-15°C) mais Highlands très changeants : averses fréquentes et vent possibles, y compris de face sur le bord du loch. Prévoir une tenue pluie."
   },
   {
     "slug": "malaga",
@@ -195,7 +275,15 @@
     "course_url": "https://www.finishers.com/es/evento/maraton-de-malaga",
     "from_paris": "✈️ Vol direct ~2h30",
     "other_races": null,
-    "participants_source": "https://sportmaniacs.com/es/races/generali-maraton-malaga-2025/69282738-745c-4b73-9108-459cac1f0f0c/rankings"
+    "participants_source": "https://sportmaniacs.com/es/races/generali-maraton-malaga-2025/69282738-745c-4b73-9108-459cac1f0f0c/rankings",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 21.9,
+    "temp_min": 14.2,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 19,
+    "weather_opinion": "Début novembre doux et ensoleillé : ~14-22°C, pluie rare. Peut être chaud en fin de course si le départ est tardif, sinon très bon créneau."
   },
   {
     "slug": "munich",
@@ -213,7 +301,15 @@
     "course_url": "https://marathonmuenchen.org/en/the-marathon-one-lap-course-through-munich/",
     "from_paris": "✈️ Vol direct ~1h30 (ou TGV direct ~5h40)",
     "other_races": "Semi 10h30 (marathon 9h), 10 km 13h30, relais marathon",
-    "participants_source": "https://muenchen.r.mikatiming.com/2025/?page=161&event=M_2EF3BRLP2&pid=list&pidp=start&search%5Bsex%5D=M&search%5Bage_class%5D=%25"
+    "participants_source": "https://muenchen.r.mikatiming.com/2025/?page=161&event=M_2EF3BRLP2&pid=list&pidp=start&search%5Bsex%5D=M&search%5Bage_class%5D=%25",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 13.1,
+    "temp_min": 7.5,
+    "rain_mm": 7,
+    "rain_day_mm": 0.1,
+    "wind_kmh": 14,
+    "weather_opinion": "Mi-octobre frais : ~5-14°C, températures idéales. Souvent sec avec brume matinale, parfois pluie. Très bon créneau pour un marathon."
   },
   {
     "slug": "nice-cannes",
@@ -231,7 +327,15 @@
     "course_url": null,
     "from_paris": "✈️ Vol direct ~1h25 (ou TGV direct ~5h40)",
     "other_races": "20 km (pas de semi)",
-    "participants_source": "https://timing4you.com/resultats/G-Live-10.1/g-live.html?f=../2025/Marathon06/Marathon06_2025.clax"
+    "participants_source": "https://timing4you.com/resultats/G-Live-10.1/g-live.html?f=../2025/Marathon06/Marathon06_2025.clax",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 16.5,
+    "temp_min": 9.9,
+    "rain_mm": 14.2,
+    "rain_day_mm": 0,
+    "wind_kmh": 14,
+    "weather_opinion": "Début novembre doux : ~11-18°C. Mais c'est la saison des épisodes méditerranéens pluvieux ou orageux sur la Côte d'Azur : risque réel de pluie forte et de vent."
   },
   {
     "slug": "oslo",
@@ -249,7 +353,15 @@
     "course_url": "https://oslomaraton.no/en/loypa/",
     "from_paris": "✈️ Vol direct ~2h",
     "other_races": null,
-    "participants_source": "https://live.ultimate.dk/desktop/front/index.php?eventid=6713&ignoreuseragent=true"
+    "participants_source": "https://live.ultimate.dk/desktop/front/index.php?eventid=6713&ignoreuseragent=true",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 16,
+    "temp_min": 10.4,
+    "rain_mm": 4.7,
+    "rain_day_mm": 1.4,
+    "wind_kmh": 14,
+    "weather_opinion": "Mi-septembre : ~10-17°C, conditions de course quasi idéales. Les averses restent fréquentes en Norvège du Sud, mais rarement très fortes."
   },
   {
     "slug": "palerme",
@@ -267,7 +379,15 @@
     "course_url": null,
     "from_paris": "✈️ Vol direct ~2h30",
     "other_races": null,
-    "participants_source": "https://www.palermomaratona.it/edizione-2025/"
+    "participants_source": "https://www.palermomaratona.it/edizione-2025/",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 23.5,
+    "temp_min": 15.1,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 8,
+    "weather_opinion": "Mi-novembre doux : ~14-22°C, souvent ensoleillé. La pluie devient plus fréquente à cette période. Peut être chaud pour courir, sinon très bon créneau."
   },
   {
     "slug": "parme",
@@ -285,7 +405,15 @@
     "course_url": "https://www.parmamarathon.it/percorso-maratona/",
     "from_paris": "✈️ Vol direct Milan ou Bologne ~1h30 + 🚆 train ~1h",
     "other_races": "24 km, 32 km, 10 km",
-    "participants_source": "https://www.endu.net/fr/events/parma-marathon/results?eventId=94521&raceId=57038&categoryId=0&optionId=579014"
+    "participants_source": "https://www.endu.net/fr/events/parma-marathon/results?eventId=94521&raceId=57038&categoryId=0&optionId=579014",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 18.2,
+    "temp_min": 7.3,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 8,
+    "weather_opinion": "Mi-octobre : ~8-19°C, bonnes températures. Brouillard matinal fréquent dans la plaine du Pô, pluie d'automne possible. Plutôt favorable."
   },
   {
     "slug": "porto",
@@ -303,7 +431,15 @@
     "course_url": "https://www.finishers.com/nl/evenement/marathon-van-porto",
     "from_paris": "✈️ Vol direct ~2h",
     "other_races": "10 km et 6 km",
-    "participants_source": "https://www.maratonadoporto.com/pt/resultados-2025/"
+    "participants_source": "https://www.maratonadoporto.com/pt/resultados-2025/",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 17.2,
+    "temp_min": 10.3,
+    "rain_mm": 27.7,
+    "rain_day_mm": 0,
+    "wind_kmh": 15,
+    "weather_opinion": "Températures idéales (~11-17°C) mais début de saison pluvieuse : pluie fréquente début novembre, avec du vent côté Atlantique. Prévoir une option pluie."
   },
   {
     "slug": "sofia",
@@ -321,7 +457,15 @@
     "course_url": null,
     "from_paris": "✈️ Vol direct ~2h50",
     "other_races": "5 km et 10 km le samedi",
-    "participants_source": "https://my4.raceresult.com/366218/results/pdf?name=Result%20Lists%7C01%20-%20Gender%20Results&contest=4&lang=en"
+    "participants_source": "https://my4.raceresult.com/366218/results/pdf?name=Result%20Lists%7C01%20-%20Gender%20Results&contest=4&lang=en",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 21.6,
+    "temp_min": 11.9,
+    "rain_mm": 15.8,
+    "rain_day_mm": 12.4,
+    "wind_kmh": 14,
+    "weather_opinion": "Mi-octobre : normalement ~6-18°C, plutôt sec et ensoleillé, matins frais. Bon créneau ; 2026 a été plus chaud et pluvieux que la normale."
   },
   {
     "slug": "tirana",
@@ -339,7 +483,15 @@
     "course_url": "https://www.tiranamarathon.com/en/itinerari",
     "from_paris": "✈️ Vol direct ~2h40",
     "other_races": "Semi et 10 km (horaires à confirmer)",
-    "participants_source": "https://my.raceresult.com/366805/results#3_0E6344"
+    "participants_source": "https://my.raceresult.com/366805/results#3_0E6344",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 20.8,
+    "temp_min": 13.1,
+    "rain_mm": 83.4,
+    "rain_day_mm": 1.1,
+    "wind_kmh": 18,
+    "weather_opinion": "Fin octobre doux (~14-22°C) mais début de saison des pluies : orages et épisodes de forte pluie possibles. Chaleur modérée le jour, humidité élevée."
   },
   {
     "slug": "turin",
@@ -357,7 +509,15 @@
     "course_url": "https://www.finishers.com/course/marathon-de-turin",
     "from_paris": "✈️ Vol direct ~1h25 (ou TGV direct ~5h30)",
     "other_races": null,
-    "participants_source": "https://www.corrieredellosport.it/news/altri-sport/running/2025/12/22-145415500/classifica_maratone_italiane_19mila_atleti_al_traguardo_roma_prima"
+    "participants_source": "https://www.corrieredellosport.it/news/altri-sport/running/2025/12/22-145415500/classifica_maratone_italiane_19mila_atleti_al_traguardo_roma_prima",
+    "weather_year": 2025,
+    "weather_kind": "last_year",
+    "temp_max": 8,
+    "temp_min": -2.1,
+    "rain_mm": 0,
+    "rain_day_mm": 0,
+    "wind_kmh": 4,
+    "weather_opinion": "Fin novembre froid : ~0-9°C, gelées matinales possibles et brouillard de la plaine du Pô. Plutôt sec, peu de vent ; départ très frais, à bien s'habiller."
   },
   {
     "slug": "varsovie",
@@ -375,7 +535,15 @@
     "course_url": "https://maratonwarszawski.com/en/news/here-it-is-the-marathon-course/",
     "from_paris": "✈️ Vol direct ~2h10",
     "other_races": "Semi en mars",
-    "participants_source": "https://live.sts-timing.pl/mw2025/WynikiMaraton.pdf"
+    "participants_source": "https://live.sts-timing.pl/mw2025/WynikiMaraton.pdf",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 18.7,
+    "temp_min": 9.1,
+    "rain_mm": 0.8,
+    "rain_day_mm": 0,
+    "wind_kmh": 10,
+    "weather_opinion": "Fin septembre : ~8-18°C, conditions agréables pour courir. Plutôt sec, début d'automne ; fraîcheur le matin."
   },
   {
     "slug": "zagreb",
@@ -393,6 +561,14 @@
     "course_url": null,
     "from_paris": "✈️ Vol direct ~2h",
     "other_races": null,
-    "participants_source": "https://zagrebmarathon.depar.hr/2025/"
+    "participants_source": "https://zagrebmarathon.depar.hr/2025/",
+    "weather_year": 2026,
+    "weather_kind": "observed",
+    "temp_max": 14.5,
+    "temp_min": 9.6,
+    "rain_mm": 23.1,
+    "rain_day_mm": 2.1,
+    "wind_kmh": 8,
+    "weather_opinion": "Automne doux : ~8-17°C, températures idéales. Mais octobre est souvent humide avec brouillard le matin ; pluie possible sans être systématique."
   }
 ]

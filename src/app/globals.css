@@ -280,3 +280,8 @@ h2{font-weight:800;font-size:25px;line-height:1.1;letter-spacing:-.01em}
 
 .roomline{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}
 .roomline .roomcode{margin:0}
+
+/* météo (fiche marathon) */
+.fact .sub{color:var(--muted);font-size:13px;margin-top:1px}
+.wsrc{margin:2px 0 12px;font-size:13px}
+.wopinion{margin:0;padding:10px 14px;border-left:4px solid var(--blue);background:var(--bg);border-radius:0 12px 12px 0;line-height:1.5}

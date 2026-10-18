@@ -32,3 +32,16 @@ export function stats(m: CatalogMarathon) {
     { k: 'Participants', icon: '👥', v: fmtParticipants(m.participants) },
   ];
 }
+
+const dec = (n: number, digits = 1) => n.toLocaleString('fr-FR', { minimumFractionDigits: n % 1 ? digits : 0, maximumFractionDigits: digits });
+export const fmtTemp = (n: number | null) => (n == null ? '?' : `${dec(n)}°`);
+export const fmtMm = (n: number | null) => (n == null ? '?' : `${dec(n)} mm`);
+export const fmtWind = (n: number | null) => (n == null ? '?' : `${dec(n, 0)} km/h`);
+
+/** D'où vient la mesure météo (« observed » = autour de la course 2026, sinon même date l'an dernier). */
+export function weatherSource(m: Pick<CatalogMarathon, 'weather_kind' | 'weather_year'>): string {
+  if (!m.weather_year) return '';
+  return m.weather_kind === 'observed'
+    ? `Relevé réel ${m.weather_year} · veille, jour de course et lendemain`
+    : `Même date en ${m.weather_year} (l'an dernier)`;
+}

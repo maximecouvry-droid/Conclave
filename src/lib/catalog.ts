@@ -21,6 +21,15 @@ export interface CatalogMarathon {
   from_paris: string | null;
   other_races: string | null;
   participants_source: string | null;
+  /** météo : « observed » = relevé réel autour de la course 2026, « last_year » = même date l'an dernier */
+  weather_year: number | null;
+  weather_kind: 'observed' | 'last_year' | null;
+  temp_max: number | null;
+  temp_min: number | null;
+  rain_mm: number | null;
+  rain_day_mm: number | null;
+  wind_kmh: number | null;
+  weather_opinion: string | null;
 }
 
 let cache: CatalogMarathon[] | null = null;

@@ -11,3 +11,13 @@ alter table catalog enable row level security;
 drop policy if exists "public read catalog" on catalog;
 create policy "public read catalog" on catalog for select to anon, authenticated using (true);
 alter table marathons add column if not exists slug text;
+
+-- ---------- météo (migration 004) ----------
+alter table catalog add column if not exists weather_year int;
+alter table catalog add column if not exists weather_kind text;
+alter table catalog add column if not exists temp_max numeric;
+alter table catalog add column if not exists temp_min numeric;
+alter table catalog add column if not exists rain_mm numeric;
+alter table catalog add column if not exists rain_day_mm numeric;
+alter table catalog add column if not exists wind_kmh numeric;
+alter table catalog add column if not exists weather_opinion text;

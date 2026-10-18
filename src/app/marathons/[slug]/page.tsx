@@ -2,15 +2,39 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCatalog, type CatalogMarathon } from '@/lib/catalog';
-import { fmtDate, fmtElevation, fmtLoops, fmtParticipants } from '@/lib/format';
+import { fmtDate, fmtElevation, fmtLoops, fmtMm, fmtParticipants, fmtTemp, fmtWind, weatherSource } from '@/lib/format';
 import { loadNote, saveNote } from '@/lib/notes';
 
-const Fact = ({ k, v, wide }: { k: string; v: string; wide?: boolean }) => (
+const Fact = ({ k, v, sub, wide }: { k: string; v: string; sub?: string; wide?: boolean }) => (
   <div className={`fact ${wide ? 'wide' : ''}`}>
     <div className="k">{k}</div>
     <div className="v">{v}</div>
+    {sub ? <div className="sub">{sub}</div> : null}
   </div>
 );
+
+/** Météo : relevé chiffré (température, pluie, vent) + avis en texte. */
+function Weather({ m }: { m: CatalogMarathon }) {
+  const hasData = m.temp_max != null || m.rain_mm != null || m.wind_kmh != null;
+  if (!hasData && !m.weather_opinion) return null;
+  const dry = (m.rain_day_mm ?? 0) === 0;
+  return (
+    <div className="panel">
+      <h2>Météo</h2>
+      {hasData ? (
+        <>
+          <div className="facts" style={{ marginBottom: 6 }}>
+            <Fact k="Température" v={`${fmtTemp(m.temp_max)} / ${fmtTemp(m.temp_min)}`} sub="maximum / minimum" wide />
+            <Fact k="Pluie" v={fmtMm(m.rain_mm)} sub={m.rain_mm ? (dry ? 'rien le jour J' : `dont ${fmtMm(m.rain_day_mm)} le jour J`) : 'aucune'} />
+            <Fact k="Vent" v={fmtWind(m.wind_kmh)} sub="vent maximum" />
+          </div>
+          <p className="hint wsrc">{weatherSource(m)}</p>
+        </>
+      ) : null}
+      {m.weather_opinion ? <p className="wopinion">{m.weather_opinion}</p> : null}
+    </div>
+  );
+}
 
 function CourseImage({ m }: { m: CatalogMarathon }) {
   const [failed, setFailed] = useState(false);
@@ -89,6 +113,8 @@ export default function MarathonDetail() {
             <h2>Depuis Paris</h2>
             <p style={{ margin: 0 }}>{m.from_paris ?? '?'}</p>
           </div>
+
+          <Weather m={m} />
 
           <div className="panel">
             <h2>Autres courses</h2>

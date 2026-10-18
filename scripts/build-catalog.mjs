@@ -2,6 +2,7 @@
 // (données copiées ici) + coordonnées + photo de ville récupérée sur Wikipedia.
 // Usage : node scripts/build-catalog.mjs
 import { writeFileSync, mkdirSync } from 'node:fs';
+import { WEATHER, parseMeteo } from './weather-data.mjs';
 
 // [slug, ville, page Wikipedia, lat, lng, date, boucles, D+, semi, participants,
 //  image parcours, site officiel, page parcours, depuis Paris, autres courses, source participants]
@@ -53,7 +54,9 @@ const out = [];
 for (const [slug, name, wiki, lat, lng, date, loops, elevation, half, participants, course_image, official_url, course_url, from_paris, other_races, participants_source] of ROWS) {
   const city_image = await cityImage(wiki);
   console.log(slug, city_image ? 'img ok' : 'PAS D\'IMAGE');
-  out.push({ slug, name, lat, lng, date, loops, elevation, half, participants, city_image, course_image: course_image || null, official_url, course_url: course_url || null, from_paris, other_races: other_races || null, participants_source: participants_source || null });
+  const w = WEATHER[slug];
+  if (!w) throw new Error('Météo manquante pour ' + slug);
+  out.push({ slug, name, lat, lng, date, loops, elevation, half, participants, city_image, course_image: course_image || null, official_url, course_url: course_url || null, from_paris, other_races: other_races || null, participants_source: participants_source || null, ...parseMeteo(slug, w[0]), weather_opinion: w[1] });
 }
 mkdirSync('data', { recursive: true });
 writeFileSync('data/marathons.json', JSON.stringify(out, null, 2));
