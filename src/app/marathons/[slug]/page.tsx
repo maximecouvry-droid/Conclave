@@ -25,7 +25,7 @@ function Weather({ m }: { m: CatalogMarathon }) {
         <>
           <div className="facts" style={{ marginBottom: 6 }}>
             <Fact k="Température" v={`${fmtTemp(m.temp_max)} / ${fmtTemp(m.temp_min)}`} sub="maximum / minimum" wide />
-            <Fact k="Pluie" v={fmtMm(m.rain_mm)} sub={m.rain_mm ? (dry ? 'rien le jour J' : `dont ${fmtMm(m.rain_day_mm)} le jour J`) : 'aucune'} />
+            <Fact k="Pluie" v={fmtMm(m.rain_mm)} sub={m.rain_mm ? (dry ? 'rien le jour J' : `dont ${fmtMm(m.rain_day_mm)} le jour J`) : 'aucune'} />
             <Fact k="Vent" v={fmtWind(m.wind_kmh)} sub="vent maximum" />
           </div>
           <p className="hint wsrc">{weatherSource(m)}</p>
